@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vape 2 Go — Light Design Options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,900;1,400;1,600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #f0f0f0; font-family: 'Inter', sans-serif; }
+
+/* ── TOP NAV ── */
+.top-nav { position: sticky; top: 0; z-index: 100; background: #111; padding: 0 20px; height: 48px; display: flex; align-items: center; justify-content: space-between; }
+.top-nav-tabs { display: flex; gap: 4px; }
+.tab-btn { background: transparent; border: 1px solid #333; color: #777; padding: 5px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; font-family: 'Inter', sans-serif; transition: all .15s; white-space: nowrap; }
+.tab-btn:hover { border-color: #555; color: #ccc; }
+.tab-btn.active { background: #fff; color: #000; border-color: #fff; font-weight: 600; }
+.top-nav-label { font-size: 11px; color: #444; letter-spacing: .06em; text-transform: uppercase; }
+.live-badge { background: #7c3aed; color: #fff; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 100px; letter-spacing: .06em; text-transform: uppercase; margin-left: 6px; vertical-align: middle; }
+
+.option-panel { display: none; }
+.option-panel.active { display: block; }
+.option-label { text-align: center; padding: 10px 16px; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #999; background: #f8f8f8; border-bottom: 1px solid #e8e8e8; font-family: 'Inter', sans-serif; }
+
+
+/* ══════════════════════════════════════════════
+   OPCIÓN 1 — Editorial Clean (LIVE)
+   DM Serif Display + DM Sans · Violet · White
+   ══════════════════════════════════════════════ */
+.o1 { background: #fff; color: #111827; font-family: 'DM Sans', sans-serif; }
+
+.o1-nav { background: rgba(255,255,255,0.96); backdrop-filter: blur(8px); border-bottom: 1px solid #e5e7eb; padding: 0 32px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+.o1-logo-name { font-family: 'DM Serif Display', serif; font-size: 18px; color: #111827; }
+.o1-logo-sub { font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: #9ca3af; margin-top: 1px; }
+.o1-nav-links { display: flex; gap: 28px; }
+.o1-nav-links a { color: #6b7280; font-size: 13px; text-decoration: none; font-weight: 400; transition: color .15s; }
+.o1-nav-links a:hover { color: #111827; }
+.o1-cta { background: #7c3aed; color: #fff; font-size: 12px; font-weight: 600; padding: 8px 18px; border-radius: 8px; text-decoration: none; transition: background .15s; }
+.o1-cta:hover { background: #6d28d9; }
+
+.o1-hero { background: #fff; min-height: 420px; padding: 72px 32px; display: flex; align-items: center; border-bottom: 1px solid #f3f4f6; }
+.o1-hero-content { max-width: 600px; }
+.o1-hero-tag { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: .15em; text-transform: uppercase; color: #7c3aed; background: #ede9fe; padding: 4px 12px; border-radius: 100px; margin-bottom: 22px; }
+.o1-hero h1 { font-family: 'DM Serif Display', serif; font-size: 64px; font-weight: 400; line-height: .95; letter-spacing: -.02em; margin-bottom: 20px; color: #111827; }
+.o1-hero h1 em { font-style: italic; color: #7c3aed; }
+.o1-hero p { color: #6b7280; font-size: 16px; line-height: 1.75; font-weight: 300; margin-bottom: 32px; max-width: 440px; }
+.o1-hero-btns { display: flex; gap: 12px; align-items: center; }
+.o1-btn-p { background: #7c3aed; color: #fff; font-weight: 600; font-size: 13px; padding: 14px 28px; border-radius: 10px; text-decoration: none; }
+.o1-btn-s { color: #6b7280; font-size: 13px; text-decoration: none; border-bottom: 1px solid #d1d5db; padding-bottom: 2px; }
+.o1-hero-emoji { margin-left: auto; font-size: 140px; line-height: 1; }
+
+.o1-section { padding: 64px 32px; }
+.o1-section-alt { background: #f9fafb; border-top: 1px solid #f3f4f6; border-bottom: 1px solid #f3f4f6; }
+.o1-section h2 { font-family: 'DM Serif Display', serif; font-size: 32px; font-weight: 400; color: #111827; margin-bottom: 6px; }
+.o1-section-sub { font-size: 13px; color: #9ca3af; margin-bottom: 32px; }
+
+.o1-cats { display: flex; gap: 0; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; }
+.o1-cat { flex: 1; padding: 28px 20px; border-right: 1px solid #e5e7eb; cursor: pointer; transition: background .15s; }
+.o1-cat:last-child { border-right: none; }
+.o1-cat:hover { background: #faf5ff; }
+.o1-cat-num { font-size: 9px; letter-spacing: .15em; text-transform: uppercase; color: #d1d5db; margin-bottom: 16px; font-family: 'DM Sans', sans-serif; }
+.o1-cat-icon { font-size: 24px; margin-bottom: 12px; }
+.o1-cat-name { font-family: 'DM Serif Display', serif; font-size: 18px; color: #111827; margin-bottom: 6px; }
+.o1-cat-desc { font-size: 12px; color: #9ca3af; line-height: 1.5; }
+.o1-cat-link { font-size: 12px; color: #7c3aed; margin-top: 16px; }
+
+.o1-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #e5e7eb; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; }
+.o1-card { background: #fff; cursor: pointer; transition: background .15s; }
+.o1-card:hover { background: #faf5ff; }
+.o1-card-img { aspect-ratio: 1; background: #f9fafb; display: flex; align-items: center; justify-content: center; font-size: 52px; position: relative; }
+.o1-card-body { padding: 16px; }
+.o1-card-meta { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.o1-card-cat { font-size: 9px; letter-spacing: .15em; text-transform: uppercase; color: #9ca3af; }
+.o1-card-avail { font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: #7c3aed; }
+.o1-card-name { font-family: 'DM Serif Display', serif; font-size: 15px; color: #111827; line-height: 1.35; margin-bottom: 14px; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.o1-card-footer { display: flex; align-items: center; justify-content: space-between; }
+.o1-card-price { font-size: 14px; font-weight: 600; color: #7c3aed; }
+.o1-card-btn { background: transparent; border: 1px solid #e5e7eb; color: #9ca3af; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; padding: 6px 12px; cursor: pointer; transition: all .15s; font-family: 'DM Sans', sans-serif; border-radius: 6px; }
+.o1-card:hover .o1-card-btn { border-color: #7c3aed; color: #7c3aed; }
+
+
+/* ══════════════════════════════════════════════
+   OPCIÓN 2 — Luxury Warm
+   Playfair Display + Inter · Charcoal + Gold
+   Background #FAFAF9 warm white
+   ══════════════════════════════════════════════ */
+.o2 { background: #fafaf9; color: #0c0a09; font-family: 'Inter', sans-serif; }
+
+.o2-nav { background: #fafaf9; border-bottom: 1px solid #d6d3d1; padding: 0 40px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+.o2-logo { font-family: 'Playfair Display', serif; font-size: 20px; color: #1c1917; letter-spacing: .02em; }
+.o2-nav-links { display: flex; gap: 32px; }
+.o2-nav-links a { color: #78716c; font-size: 13px; text-decoration: none; letter-spacing: .02em; transition: color .15s; }
+.o2-nav-links a:hover { color: #1c1917; }
+.o2-cta { background: #1c1917; color: #fafaf9; font-size: 12px; font-weight: 500; padding: 9px 20px; text-decoration: none; letter-spacing: .04em; transition: background .15s; }
+.o2-cta:hover { background: #44403c; }
+
+.o2-hero { background: #fafaf9; min-height: 460px; padding: 80px 40px; display: flex; align-items: flex-end; border-bottom: 1px solid #e7e5e4; position: relative; overflow: hidden; }
+.o2-hero-bg { position: absolute; top: 0; left: 0; right: 0; bottom: 0; font-family: 'Playfair Display', serif; font-size: 240px; font-weight: 900; color: rgba(0,0,0,0.03); line-height: 1; pointer-events: none; display: flex; align-items: center; overflow: hidden; letter-spacing: -.04em; padding-left: 20px; }
+.o2-hero-content { position: relative; z-index: 1; width: 65%; }
+.o2-hero-eyebrow { font-size: 10px; letter-spacing: .25em; text-transform: uppercase; color: #a16207; margin-bottom: 28px; display: flex; align-items: center; gap: 12px; }
+.o2-hero-eyebrow::before { content: ''; width: 40px; height: 1px; background: #a16207; }
+.o2-hero h1 { font-family: 'Playfair Display', serif; font-size: 72px; font-weight: 400; line-height: .95; letter-spacing: -.02em; margin-bottom: 24px; color: #1c1917; }
+.o2-hero h1 em { font-style: italic; color: #a16207; }
+.o2-hero p { color: #78716c; font-size: 16px; line-height: 1.8; font-weight: 300; margin-bottom: 36px; max-width: 460px; }
+.o2-hero-btns { display: flex; gap: 16px; align-items: center; }
+.o2-btn-p { background: #1c1917; color: #fafaf9; font-size: 12px; font-weight: 500; padding: 15px 32px; text-decoration: none; letter-spacing: .06em; text-transform: uppercase; }
+.o2-btn-s { color: #78716c; font-size: 12px; text-decoration: none; letter-spacing: .06em; text-transform: uppercase; border-bottom: 1px solid #d6d3d1; padding-bottom: 2px; }
+
+.o2-section { padding: 72px 40px; }
+.o2-section-alt { background: #f5f5f4; border-top: 1px solid #e7e5e4; border-bottom: 1px solid #e7e5e4; }
+.o2-section h2 { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 400; color: #1c1917; margin-bottom: 6px; }
+.o2-section-sub { font-size: 13px; color: #a8a29e; margin-bottom: 40px; }
+
+.o2-cats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.o2-cat { background: #fff; border: 1px solid #e7e5e4; padding: 28px 24px; cursor: pointer; transition: all .2s; }
+.o2-cat:hover { border-color: #a16207; }
+.o2-cat-num { font-size: 9px; letter-spacing: .2em; color: #d6d3d1; text-transform: uppercase; margin-bottom: 20px; }
+.o2-cat-icon { font-size: 28px; margin-bottom: 14px; }
+.o2-cat-name { font-family: 'Playfair Display', serif; font-size: 20px; color: #1c1917; margin-bottom: 8px; }
+.o2-cat-desc { font-size: 12px; color: #a8a29e; line-height: 1.5; }
+.o2-cat-link { font-size: 11px; color: #a16207; margin-top: 16px; letter-spacing: .04em; }
+
+.o2-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.o2-card { background: #fff; border: 1px solid #e7e5e4; overflow: hidden; transition: all .2s; cursor: pointer; }
+.o2-card:hover { border-color: #a16207; box-shadow: 0 4px 24px rgba(161,98,7,0.08); }
+.o2-card-img { aspect-ratio: 1; background: #fafaf9; display: flex; align-items: center; justify-content: center; font-size: 52px; border-bottom: 1px solid #f5f5f4; }
+.o2-card-body { padding: 16px; }
+.o2-card-brand { font-size: 9px; letter-spacing: .15em; text-transform: uppercase; color: #a8a29e; margin-bottom: 8px; }
+.o2-card-name { font-family: 'Playfair Display', serif; font-size: 15px; color: #1c1917; line-height: 1.35; margin-bottom: 14px; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.o2-card-footer { display: flex; align-items: center; justify-content: space-between; }
+.o2-card-price { font-size: 14px; font-weight: 600; color: #a16207; }
+.o2-card-btn { background: #1c1917; color: #fafaf9; font-size: 11px; font-weight: 500; padding: 6px 14px; letter-spacing: .04em; border: none; cursor: pointer; font-family: 'Inter', sans-serif; transition: background .15s; }
+.o2-card-btn:hover { background: #44403c; }
+
+
+/* ══════════════════════════════════════════════
+   OPCIÓN 3 — Monochrome Bold
+   Space Grotesk · Pure Black + White · Swiss
+   Zero radius, thick dividers, ultra-stark
+   ══════════════════════════════════════════════ */
+.o3 { background: #fff; color: #000; font-family: 'Space Grotesk', sans-serif; }
+
+.o3-nav { background: #fff; border-bottom: 4px solid #000; padding: 0 40px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+.o3-logo { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.o3-nav-links { display: flex; gap: 36px; }
+.o3-nav-links a { color: #737373; font-size: 12px; text-decoration: none; letter-spacing: .06em; text-transform: uppercase; font-weight: 500; transition: color .1s; }
+.o3-nav-links a:hover { color: #000; }
+.o3-cta { background: #000; color: #fff; font-size: 11px; font-weight: 700; padding: 9px 20px; text-decoration: none; letter-spacing: .1em; text-transform: uppercase; transition: background .1s; }
+.o3-cta:hover { background: #262626; }
+
+.o3-hero { background: #fff; min-height: 460px; padding: 80px 40px 60px; display: flex; align-items: center; border-bottom: 4px solid #000; }
+.o3-hero-content { width: 70%; }
+.o3-hero-tag { font-size: 10px; letter-spacing: .3em; text-transform: uppercase; color: #737373; margin-bottom: 28px; font-weight: 500; }
+.o3-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 84px; font-weight: 700; line-height: .9; letter-spacing: -.04em; margin-bottom: 24px; color: #000; }
+.o3-hero p { color: #737373; font-size: 16px; line-height: 1.7; font-weight: 400; margin-bottom: 36px; max-width: 420px; }
+.o3-hero-btns { display: flex; gap: 0; }
+.o3-btn-p { background: #000; color: #fff; font-size: 11px; font-weight: 700; padding: 16px 32px; text-decoration: none; letter-spacing: .12em; text-transform: uppercase; }
+.o3-btn-s { background: #fff; color: #000; font-size: 11px; font-weight: 700; padding: 16px 32px; text-decoration: none; letter-spacing: .12em; text-transform: uppercase; border: 3px solid #000; margin-left: -3px; }
+.o3-hero-side { margin-left: auto; text-align: right; }
+.o3-hero-big { font-family: 'Space Grotesk', sans-serif; font-size: 120px; font-weight: 700; letter-spacing: -.06em; color: #f5f5f5; line-height: 1; }
+
+.o3-section { padding: 64px 40px; border-bottom: 4px solid #000; }
+.o3-section-alt { background: #f5f5f5; }
+.o3-section-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 40px; border-bottom: 2px solid #000; padding-bottom: 12px; }
+.o3-section-header h2 { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; letter-spacing: -.02em; text-transform: uppercase; }
+.o3-section-header span { font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: #737373; }
+
+.o3-cats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 3px solid #000; }
+.o3-cat { padding: 28px 20px; border-right: 2px solid #000; cursor: pointer; transition: background .1s; }
+.o3-cat:last-child { border-right: none; }
+.o3-cat:hover { background: #000; color: #fff; }
+.o3-cat:hover .o3-cat-name, .o3-cat:hover .o3-cat-desc { color: #fff; }
+.o3-cat:hover .o3-cat-num { color: #737373; }
+.o3-cat-num { font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: #d4d4d4; margin-bottom: 20px; }
+.o3-cat-icon { font-size: 28px; margin-bottom: 14px; filter: grayscale(1); }
+.o3-cat-name { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 600; color: #000; margin-bottom: 6px; letter-spacing: -.01em; }
+.o3-cat-desc { font-size: 12px; color: #737373; line-height: 1.5; }
+
+.o3-cards { display: grid; grid-template-columns: repeat(4, 1fr); border: 3px solid #000; }
+.o3-card { border-right: 2px solid #000; cursor: pointer; transition: background .1s; }
+.o3-card:last-child { border-right: none; }
+.o3-card:hover { background: #f5f5f5; }
+.o3-card-img { aspect-ratio: 1; background: #f5f5f5; display: flex; align-items: center; justify-content: center; font-size: 52px; border-bottom: 2px solid #000; filter: grayscale(0.3); }
+.o3-card-body { padding: 16px; }
+.o3-card-cat { font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: #a3a3a3; margin-bottom: 8px; font-weight: 600; }
+.o3-card-name { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; color: #000; line-height: 1.35; margin-bottom: 12px; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.o3-card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid #e5e5e5; }
+.o3-card-price { font-size: 14px; font-weight: 700; color: #000; }
+.o3-card-btn { background: #000; color: #fff; font-size: 10px; font-weight: 700; padding: 6px 12px; border: none; cursor: pointer; letter-spacing: .1em; text-transform: uppercase; font-family: 'Space Grotesk', sans-serif; transition: background .1s; }
+.o3-card-btn:hover { background: #262626; }
+
+
+/* ══════════════════════════════════════════════
+   OPCIÓN 4 — Soft Violet Boutique
+   DM Serif Display + DM Sans · Violet bg suave
+   Fondo #F5F3FF, primario #4C1D95 profundo
+   ══════════════════════════════════════════════ */
+.o4 { background: #f5f3ff; color: #1e1b4b; font-family: 'DM Sans', sans-serif; }
+
+.o4-nav { background: #f5f3ff; border-bottom: 1px solid #ddd6fe; padding: 0 32px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+.o4-logo-name { font-family: 'DM Serif Display', serif; font-size: 18px; color: #1e1b4b; }
+.o4-logo-sub { font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: #a78bfa; margin-top: 1px; }
+.o4-nav-links { display: flex; gap: 28px; }
+.o4-nav-links a { color: #6d28d9; font-size: 13px; text-decoration: none; font-weight: 400; transition: color .15s; }
+.o4-nav-links a:hover { color: #1e1b4b; }
+.o4-cta { background: #4c1d95; color: #fff; font-size: 12px; font-weight: 600; padding: 8px 18px; border-radius: 8px; text-decoration: none; }
+
+.o4-hero { background: linear-gradient(135deg, #ede9fe 0%, #f5f3ff 60%, #eef2ff 100%); min-height: 440px; padding: 72px 32px; display: flex; align-items: center; border-bottom: 1px solid #ddd6fe; }
+.o4-hero-content { max-width: 580px; }
+.o4-hero-tag { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: .15em; text-transform: uppercase; color: #6d28d9; background: #ede9fe; border: 1px solid #c4b5fd; padding: 4px 12px; border-radius: 100px; margin-bottom: 22px; }
+.o4-hero h1 { font-family: 'DM Serif Display', serif; font-size: 62px; font-weight: 400; line-height: .96; letter-spacing: -.02em; margin-bottom: 20px; color: #1e1b4b; }
+.o4-hero h1 em { font-style: italic; color: #7c3aed; }
+.o4-hero p { color: #6d28d9; font-size: 16px; line-height: 1.75; font-weight: 300; margin-bottom: 32px; max-width: 440px; opacity: .8; }
+.o4-hero-btns { display: flex; gap: 12px; align-items: center; }
+.o4-btn-p { background: #4c1d95; color: #fff; font-weight: 600; font-size: 13px; padding: 13px 28px; border-radius: 10px; text-decoration: none; box-shadow: 0 4px 20px rgba(76,29,149,0.25); transition: all .15s; }
+.o4-btn-p:hover { background: #3b0764; }
+.o4-btn-s { color: #6d28d9; font-size: 13px; text-decoration: none; font-weight: 500; border: 1px solid #c4b5fd; padding: 13px 20px; border-radius: 10px; }
+.o4-hero-emoji { margin-left: auto; font-size: 130px; line-height: 1; filter: drop-shadow(0 8px 32px rgba(124,58,237,0.3)); }
+
+.o4-section { padding: 64px 32px; }
+.o4-section-alt { background: #ede9fe; border-top: 1px solid #ddd6fe; border-bottom: 1px solid #ddd6fe; }
+.o4-section h2 { font-family: 'DM Serif Display', serif; font-size: 32px; font-weight: 400; color: #1e1b4b; margin-bottom: 6px; }
+.o4-section-sub { font-size: 13px; color: #7c3aed; margin-bottom: 32px; opacity: .7; }
+
+.o4-cats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.o4-cat { background: #fff; border: 1px solid #ddd6fe; border-radius: 16px; padding: 28px 22px; cursor: pointer; transition: all .2s; }
+.o4-cat:hover { border-color: #7c3aed; box-shadow: 0 8px 32px rgba(124,58,237,0.12); transform: translateY(-2px); }
+.o4-cat-num { font-size: 9px; letter-spacing: .15em; text-transform: uppercase; color: #c4b5fd; margin-bottom: 16px; }
+.o4-cat-icon { font-size: 28px; margin-bottom: 12px; }
+.o4-cat-name { font-family: 'DM Serif Display', serif; font-size: 19px; color: #1e1b4b; margin-bottom: 6px; }
+.o4-cat-desc { font-size: 12px; color: #7c3aed; line-height: 1.5; opacity: .75; }
+.o4-cat-link { font-size: 11px; color: #7c3aed; margin-top: 14px; font-weight: 500; }
+
+.o4-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.o4-card { background: #fff; border: 1px solid #ddd6fe; border-radius: 16px; overflow: hidden; cursor: pointer; transition: all .2s; }
+.o4-card:hover { border-color: #7c3aed; box-shadow: 0 8px 32px rgba(124,58,237,0.12); transform: translateY(-2px); }
+.o4-card-img { aspect-ratio: 1; background: #f5f3ff; display: flex; align-items: center; justify-content: center; font-size: 52px; border-bottom: 1px solid #ede9fe; }
+.o4-card-body { padding: 16px; }
+.o4-card-cat { font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: #a78bfa; margin-bottom: 8px; font-weight: 600; }
+.o4-card-name { font-family: 'DM Serif Display', serif; font-size: 15px; color: #1e1b4b; line-height: 1.35; margin-bottom: 14px; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.o4-card-footer { display: flex; align-items: center; justify-content: space-between; }
+.o4-card-price { font-size: 14px; font-weight: 700; color: #4c1d95; }
+.o4-card-btn { background: #4c1d95; color: #fff; font-size: 11px; font-weight: 600; padding: 7px 14px; border: none; border-radius: 8px; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background .15s; }
+.o4-card-btn:hover { background: #3b0764; }
+</style>
+</head>
+<body>
+
+<!-- TAB NAV -->
+<div class="top-nav">
+  <div class="top-nav-tabs">
+    <button class="tab-btn active" onclick="show(1,this)">1 — Editorial Clean <span class="live-badge">LIVE</span></button>
+    <button class="tab-btn" onclick="show(2,this)">2 — Luxury Warm</button>
+    <button class="tab-btn" onclick="show(3,this)">3 — Monochrome Bold</button>
+    <button class="tab-btn" onclick="show(4,this)">4 — Soft Violet</button>
+  </div>
+  <div class="top-nav-label">Vape 2 Go · Light Options</div>
+</div>
+
+
+<!-- ══ OPCIÓN 1 — EDITORIAL CLEAN ══ -->
+<div id="opt1" class="option-panel active">
+  <div class="option-label">Editorial Clean · DM Serif Display + DM Sans · Fondo #FFF · Acento Violet-600 · Ya implementado en localhost:3001</div>
+  <div class="o1">
+    <nav class="o1-nav">
+      <div><div class="o1-logo-name">Vape 2 Go</div><div class="o1-logo-sub">Santiago · RD</div></div>
+      <div class="o1-nav-links"><a href="#">Catálogo</a><a href="#">Desechables</a><a href="#">Pods</a><a href="#">Liquids</a><a href="#">Accesorios</a></div>
+      <a href="#" class="o1-cta">Pedir ahora</a>
+    </nav>
+    <div class="o1-hero">
+      <div class="o1-hero-content">
+        <div class="o1-hero-tag">Delivery por PedidosYa</div>
+        <h1>Tu vape favorito,<br><em>donde estés</em></h1>
+        <p>Los mejores desechables, pods y liquids en Santiago, RD. Entrega rápida, marcas originales garantizadas.</p>
+        <div class="o1-hero-btns"><a href="#" class="o1-btn-p">Pedir ahora</a><a href="#" class="o1-btn-s">Ver catálogo</a></div>
+      </div>
+      <div class="o1-hero-emoji">💨</div>
+    </div>
+    <div class="o1-section">
+      <h2>Categorías</h2><div class="o1-section-sub">664 productos disponibles</div>
+      <div class="o1-cats">
+        <div class="o1-cat"><div class="o1-cat-num">01</div><div class="o1-cat-icon">💨</div><div class="o1-cat-name">Desechables</div><div class="o1-cat-desc">WAKA, Elf Bar, Geek Bar, Fume</div><div class="o1-cat-link">Explorar →</div></div>
+        <div class="o1-cat"><div class="o1-cat-num">02</div><div class="o1-cat-icon">⚡</div><div class="o1-cat-name">Pods</div><div class="o1-cat-desc">IQOS y kits recargables</div><div class="o1-cat-link">Explorar →</div></div>
+        <div class="o1-cat"><div class="o1-cat-num">03</div><div class="o1-cat-icon">🔥</div><div class="o1-cat-name">Liquids</div><div class="o1-cat-desc">E-liquids y sales de nicotina</div><div class="o1-cat-link">Explorar →</div></div>
+        <div class="o1-cat"><div class="o1-cat-num">04</div><div class="o1-cat-icon">✨</div><div class="o1-cat-name">Accesorios</div><div class="o1-cat-desc">Heets, Terea, IQOS</div><div class="o1-cat-link">Explorar →</div></div>
+      </div>
+    </div>
+    <div class="o1-section o1-section-alt">
+      <h2>Productos destacados</h2><div class="o1-section-sub">Más pedidos esta semana</div>
+      <div class="o1-cards">
+        <div class="o1-card"><div class="o1-card-img">💨</div><div class="o1-card-body"><div class="o1-card-meta"><span class="o1-card-cat">Desechable</span><span class="o1-card-avail">Disponible</span></div><div class="o1-card-name">Elf Bar BC5000 Strawberry Mango</div><div class="o1-card-footer"><span class="o1-card-price">RD$ 950</span><button class="o1-card-btn">Pedir</button></div></div></div>
+        <div class="o1-card"><div class="o1-card-img">⚡</div><div class="o1-card-body"><div class="o1-card-meta"><span class="o1-card-cat">Desechable</span><span class="o1-card-avail">Disponible</span></div><div class="o1-card-name">WAKA soPro PA10000 Puffs</div><div class="o1-card-footer"><span class="o1-card-price">RD$ 1,200</span><button class="o1-card-btn">Pedir</button></div></div></div>
+        <div class="o1-card"><div class="o1-card-img">🍇</div><div class="o1-card-body"><div class="o1-card-meta"><span class="o1-card-cat">Desechable</span><span class="o1-card-avail">Disponible</span></div><div class="o1-card-name">Geek Bar Pulse 15000 Blue Razz</div><div class="o1-card-footer"><span class="o1-card-price">RD$ 1,100</span><button class="o1-card-btn">Pedir</button></div></div></div>
+        <div class="o1-card"><div class="o1-card-img">🍒</div><div class="o1-card-body"><div class="o1-card-meta"><span class="o1-card-cat">Accesorio</span><span class="o1-card-avail">Disponible</span></div><div class="o1-card-name">Cajetilla Heets Sienna Selection</div><div class="o1-card-footer"><span class="o1-card-price">RD$ 650</span><button class="o1-card-btn">Pedir</button></div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ OPCIÓN 2 — LUXURY WARM ══ -->
+<div id="opt2" class="option-panel">
+  <div class="option-label">Luxury Warm · Playfair Display + Inter · Fondo #FAFAF9 warm white · Acento gold #A16207 + charcoal · Premium/editorial</div>
+  <div class="o2">
+    <nav class="o2-nav">
+      <div class="o2-logo">Vape 2 Go</div>
+      <div class="o2-nav-links"><a href="#">Catálogo</a><a href="#">Desechables</a><a href="#">Pods</a><a href="#">Liquids</a><a href="#">Accesorios</a></div>
+      <a href="#" class="o2-cta">Pedir ahora</a>
+    </nav>
+    <div class="o2-hero">
+      <div class="o2-hero-bg">VAPE</div>
+      <div class="o2-hero-content">
+        <div class="o2-hero-eyebrow">Santiago, República Dominicana</div>
+        <h1>Tu vape favorito,<br><em>donde estés</em></h1>
+        <p>Los mejores desechables, pods y liquids. Entrega rápida en Santiago vía PedidosYa. Marcas 100% originales.</p>
+        <div class="o2-hero-btns"><a href="#" class="o2-btn-p">Pedir ahora</a><a href="#" class="o2-btn-s">Ver catálogo</a></div>
+      </div>
+    </div>
+    <div class="o2-section">
+      <h2>Categorías</h2><div class="o2-section-sub">664 productos · Marcas originales garantizadas</div>
+      <div class="o2-cats">
+        <div class="o2-cat"><div class="o2-cat-num">01</div><div class="o2-cat-icon">💨</div><div class="o2-cat-name">Desechables</div><div class="o2-cat-desc">WAKA, Elf Bar, Geek Bar, Fume y más marcas premium</div><div class="o2-cat-link">Explorar →</div></div>
+        <div class="o2-cat"><div class="o2-cat-num">02</div><div class="o2-cat-icon">⚡</div><div class="o2-cat-name">Pods</div><div class="o2-cat-desc">IQOS y kits recargables de alta performance</div><div class="o2-cat-link">Explorar →</div></div>
+        <div class="o2-cat"><div class="o2-cat-num">03</div><div class="o2-cat-icon">🔥</div><div class="o2-cat-name">Liquids</div><div class="o2-cat-desc">E-liquids, sales de nicotina, freebase</div><div class="o2-cat-link">Explorar →</div></div>
+        <div class="o2-cat"><div class="o2-cat-num">04</div><div class="o2-cat-icon">✨</div><div class="o2-cat-name">Accesorios</div><div class="o2-cat-desc">Heets, Terea y todo lo que necesitas para tu IQOS</div><div class="o2-cat-link">Explorar →</div></div>
+      </div>
+    </div>
+    <div class="o2-section o2-section-alt">
+      <h2>Productos destacados</h2><div class="o2-section-sub">Los favoritos de la semana</div>
+      <div class="o2-cards">
+        <div class="o2-card"><div class="o2-card-img">💨</div><div class="o2-card-body"><div class="o2-card-brand">Elf Bar</div><div class="o2-card-name">BC5000 Strawberry Mango</div><div class="o2-card-footer"><span class="o2-card-price">RD$ 950</span><button class="o2-card-btn">Pedir</button></div></div></div>
+        <div class="o2-card"><div class="o2-card-img">⚡</div><div class="o2-card-body"><div class="o2-card-brand">WAKA</div><div class="o2-card-name">soPro PA10000 Puffs</div><div class="o2-card-footer"><span class="o2-card-price">RD$ 1,200</span><button class="o2-card-btn">Pedir</button></div></div></div>
+        <div class="o2-card"><div class="o2-card-img">🍇</div><div class="o2-card-body"><div class="o2-card-brand">Geek Bar</div><div class="o2-card-name">Pulse 15000 Blue Razz Ice</div><div class="o2-card-footer"><span class="o2-card-price">RD$ 1,100</span><button class="o2-card-btn">Pedir</button></div></div></div>
+        <div class="o2-card"><div class="o2-card-img">🍒</div><div class="o2-card-body"><div class="o2-card-brand">Heets</div><div class="o2-card-name">Cajetilla Sienna Selection</div><div class="o2-card-footer"><span class="o2-card-price">RD$ 650</span><button class="o2-card-btn">Pedir</button></div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ OPCIÓN 3 — MONOCHROME BOLD ══ -->
+<div id="opt3" class="option-panel">
+  <div class="option-label">Monochrome Bold · Space Grotesk · Fondo #FFF · Solo negro puro · Sin border-radius · Divisores 4px · Swiss Modernism</div>
+  <div class="o3">
+    <nav class="o3-nav">
+      <div class="o3-logo">Vape 2 Go</div>
+      <div class="o3-nav-links"><a href="#">Catálogo</a><a href="#">Desechables</a><a href="#">Pods</a><a href="#">Liquids</a><a href="#">Accesorios</a></div>
+      <a href="#" class="o3-cta">Pedir ahora</a>
+    </nav>
+    <div class="o3-hero">
+      <div class="o3-hero-content">
+        <div class="o3-hero-tag">Santiago · República Dominicana · PedidosYa</div>
+        <h1>Tu vape<br>favorito.</h1>
+        <p>Desechables, pods y liquids. Marcas originales, entrega rápida. Sin complicaciones.</p>
+        <div class="o3-hero-btns"><a href="#" class="o3-btn-p">Pedir ahora</a><a href="#" class="o3-btn-s">Ver catálogo</a></div>
+      </div>
+      <div class="o3-hero-side"><div class="o3-hero-big">💨</div></div>
+    </div>
+    <div class="o3-section">
+      <div class="o3-section-header"><h2>Categorías</h2><span>664 productos</span></div>
+      <div class="o3-cats">
+        <div class="o3-cat"><div class="o3-cat-num">01</div><div class="o3-cat-icon">💨</div><div class="o3-cat-name">Desechables</div><div class="o3-cat-desc">WAKA, Elf Bar, Geek Bar, Fume, Lost Mary</div></div>
+        <div class="o3-cat"><div class="o3-cat-num">02</div><div class="o3-cat-icon">⚡</div><div class="o3-cat-name">Pods</div><div class="o3-cat-desc">IQOS y kits recargables premium</div></div>
+        <div class="o3-cat"><div class="o3-cat-num">03</div><div class="o3-cat-icon">🔥</div><div class="o3-cat-name">Liquids</div><div class="o3-cat-desc">E-liquids y sales de nicotina</div></div>
+        <div class="o3-cat"><div class="o3-cat-num">04</div><div class="o3-cat-icon">✨</div><div class="o3-cat-name">Accesorios</div><div class="o3-cat-desc">Heets, Terea, extras IQOS</div></div>
+      </div>
+    </div>
+    <div class="o3-section o3-section-alt">
+      <div class="o3-section-header"><h2>Destacados</h2><span>Esta semana</span></div>
+      <div class="o3-cards">
+        <div class="o3-card"><div class="o3-card-img">💨</div><div class="o3-card-body"><div class="o3-card-cat">Desechable · Elf Bar</div><div class="o3-card-name">BC5000 Strawberry Mango</div><div class="o3-card-footer"><span class="o3-card-price">RD$ 950</span><button class="o3-card-btn">Pedir</button></div></div></div>
+        <div class="o3-card"><div class="o3-card-img">⚡</div><div class="o3-card-body"><div class="o3-card-cat">Desechable · WAKA</div><div class="o3-card-name">soPro PA10000</div><div class="o3-card-footer"><span class="o3-card-price">RD$ 1,200</span><button class="o3-card-btn">Pedir</button></div></div></div>
+        <div class="o3-card"><div class="o3-card-img">🍇</div><div class="o3-card-body"><div class="o3-card-cat">Desechable · Geek Bar</div><div class="o3-card-name">Pulse 15000 Blue Razz Ice</div><div class="o3-card-footer"><span class="o3-card-price">RD$ 1,100</span><button class="o3-card-btn">Pedir</button></div></div></div>
+        <div class="o3-card"><div class="o3-card-img">🍒</div><div class="o3-card-body"><div class="o3-card-cat">Accesorio · Heets</div><div class="o3-card-name">Cajetilla Sienna Selection</div><div class="o3-card-footer"><span class="o3-card-price">RD$ 650</span><button class="o3-card-btn">Pedir</button></div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ OPCIÓN 4 — SOFT VIOLET ══ -->
+<div id="opt4" class="option-panel">
+  <div class="option-label">Soft Violet Boutique · DM Serif Display + DM Sans · Fondo lavanda #F5F3FF · Acento violet profundo #4C1D95 · Más femenino/boutique</div>
+  <div class="o4">
+    <nav class="o4-nav">
+      <div><div class="o4-logo-name">Vape 2 Go</div><div class="o4-logo-sub">Santiago · RD</div></div>
+      <div class="o4-nav-links"><a href="#">Catálogo</a><a href="#">Desechables</a><a href="#">Pods</a><a href="#">Liquids</a><a href="#">Accesorios</a></div>
+      <a href="#" class="o4-cta">Pedir ahora</a>
+    </nav>
+    <div class="o4-hero">
+      <div class="o4-hero-content">
+        <div class="o4-hero-tag">Delivery por PedidosYa · Santiago, RD</div>
+        <h1>Tu vape favorito,<br><em>donde estés</em></h1>
+        <p>Los mejores desechables, pods y liquids. Entrega rápida, marcas originales.</p>
+        <div class="o4-hero-btns"><a href="#" class="o4-btn-p">Pedir ahora</a><a href="#" class="o4-btn-s">Ver catálogo</a></div>
+      </div>
+      <div class="o4-hero-emoji">💨</div>
+    </div>
+    <div class="o4-section">
+      <h2>Categorías</h2><div class="o4-section-sub">664 productos disponibles</div>
+      <div class="o4-cats">
+        <div class="o4-cat"><div class="o4-cat-num">01</div><div class="o4-cat-icon">💨</div><div class="o4-cat-name">Desechables</div><div class="o4-cat-desc">WAKA, Elf Bar, Geek Bar, Fume</div><div class="o4-cat-link">Explorar →</div></div>
+        <div class="o4-cat"><div class="o4-cat-num">02</div><div class="o4-cat-icon">⚡</div><div class="o4-cat-name">Pods</div><div class="o4-cat-desc">IQOS y kits recargables</div><div class="o4-cat-link">Explorar →</div></div>
+        <div class="o4-cat"><div class="o4-cat-num">03</div><div class="o4-cat-icon">🔥</div><div class="o4-cat-name">Liquids</div><div class="o4-cat-desc">E-liquids y sales de nicotina</div><div class="o4-cat-link">Explorar →</div></div>
+        <div class="o4-cat"><div class="o4-cat-num">04</div><div class="o4-cat-icon">✨</div><div class="o4-cat-name">Accesorios</div><div class="o4-cat-desc">Heets, Terea, IQOS</div><div class="o4-cat-link">Explorar →</div></div>
+      </div>
+    </div>
+    <div class="o4-section o4-section-alt">
+      <h2>Productos destacados</h2><div class="o4-section-sub">Más pedidos esta semana</div>
+      <div class="o4-cards">
+        <div class="o4-card"><div class="o4-card-img">💨</div><div class="o4-card-body"><div class="o4-card-cat">Desechable</div><div class="o4-card-name">Elf Bar BC5000 Strawberry Mango</div><div class="o4-card-footer"><span class="o4-card-price">RD$ 950</span><button class="o4-card-btn">Pedir</button></div></div></div>
+        <div class="o4-card"><div class="o4-card-img">⚡</div><div class="o4-card-body"><div class="o4-card-cat">Desechable</div><div class="o4-card-name">WAKA soPro PA10000 Puffs</div><div class="o4-card-footer"><span class="o4-card-price">RD$ 1,200</span><button class="o4-card-btn">Pedir</button></div></div></div>
+        <div class="o4-card"><div class="o4-card-img">🍇</div><div class="o4-card-body"><div class="o4-card-cat">Desechable</div><div class="o4-card-name">Geek Bar Pulse 15000 Blue Razz</div><div class="o4-card-footer"><span class="o4-card-price">RD$ 1,100</span><button class="o4-card-btn">Pedir</button></div></div></div>
+        <div class="o4-card"><div class="o4-card-img">🍒</div><div class="o4-card-body"><div class="o4-card-cat">Accesorio</div><div class="o4-card-name">Cajetilla Heets Sienna Selection</div><div class="o4-card-footer"><span class="o4-card-price">RD$ 650</span><button class="o4-card-btn">Pedir</button></div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+function show(n, btn) {
+  document.querySelectorAll('.option-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('opt'+n).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>

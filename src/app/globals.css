@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* Light theme — Vape 2 Go */
+    --background:             #FFFFFF;
+    --foreground:             #111827;
+    --card:                   #FFFFFF;
+    --card-foreground:        #111827;
+    --popover:                #FFFFFF;
+    --popover-foreground:     #111827;
+
+    /* Primary: violet */
+    --primary:                #7C3AED;
+    --primary-foreground:     #FFFFFF;
+    --primary-hover:          #6D28D9;
+
+    /* Secondary: soft violet tint */
+    --secondary:              #EDE9FE;
+    --secondary-foreground:   #5B21B6;
+
+    --muted:                  #F9FAFB;
+    --muted-foreground:       #6B7280;
+
+    --accent:                 #EDE9FE;
+    --accent-foreground:      #5B21B6;
+
+    --destructive:            #EF4444;
+    --destructive-foreground: #FFFFFF;
+
+    --border:                 #E5E7EB;
+    --input:                  #F3F4F6;
+    --ring:                   #7C3AED;
+
+    /* Category badge tokens */
+    --cat-desechables-bg:     #EDE9FE;
+    --cat-desechables-text:   #6D28D9;
+    --cat-pods-bg:            #DBEAFE;
+    --cat-pods-text:          #1D4ED8;
+    --cat-liquids-bg:         #D1FAE5;
+    --cat-liquids-text:       #065F46;
+    --cat-accesorios-bg:      #F3F4F6;
+    --cat-accesorios-text:    #374151;
+
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-body), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading), serif;
+  }
+}
+
+@layer utilities {
+  .card-light {
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+}
