@@ -150,19 +150,20 @@ export default async function ProductPage({
               <p className="text-3xl font-bold text-violet-700">{product.priceFormatted}</p>
             )}
 
-            <a
-              href={PEDIDOSYA_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`block text-center font-semibold text-sm py-4 rounded-xl transition-colors ${
-                product.disponible
-                  ? "bg-violet-600 text-white hover:bg-violet-700"
-                  : "bg-gray-100 text-gray-400 cursor-not-allowed"
-              }`}
-              onClick={product.disponible ? undefined : (e) => e.preventDefault()}
-            >
-              {product.disponible ? "Pedir por PedidosYa" : "No disponible"}
-            </a>
+            {product.disponible ? (
+              <a
+                href={PEDIDOSYA_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-center font-semibold text-sm py-4 rounded-xl transition-colors bg-violet-600 text-white hover:bg-violet-700"
+              >
+                Pedir por PedidosYa
+              </a>
+            ) : (
+              <span className="block text-center font-semibold text-sm py-4 rounded-xl bg-gray-100 text-gray-400 cursor-not-allowed">
+                No disponible
+              </span>
+            )}
 
             {product.description && (
               <div className="space-y-2 pt-2 border-t border-gray-100">
