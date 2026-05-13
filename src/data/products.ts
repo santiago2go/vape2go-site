@@ -101,6 +101,6 @@ export function searchProducts(query: string, limit = 8): Product[] {
     .slice(0, limit);
 }
 
-export const PEDIDOSYA_URL = "https://www.pedidosya.com.do/restaurantes/santiago/vape-2-go-menu";
+export const PEDIDOSYA_URL = "http://bit.ly/4nPE2yE";
 export const WHATSAPP_URL = "https://wa.me/18094567890";
 export const INSTAGRAM_URL = "https://instagram.com/vape2go.rd";
