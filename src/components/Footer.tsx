@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Logo from "./Logo";
-import { CATEGORIES, INSTAGRAM_URL } from "@/data/products";
+import { CATEGORIES, INSTAGRAM_URL, PEDIDOSYA_URL } from "@/data/products";
 
 export default function Footer() {
   return (
@@ -56,7 +56,7 @@ export default function Footer() {
         <div>
           <h4 className="text-sm font-semibold text-gray-900 mb-4">Pide ahora</h4>
           <a
-            href="https://www.pedidosya.com.do"
+            href={PEDIDOSYA_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block bg-violet-600 text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-violet-700 transition-colors"
