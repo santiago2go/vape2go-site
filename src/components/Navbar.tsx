@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Search, Menu, X, MessageCircle } from "lucide-react";
+import { Search, Menu, X } from "lucide-react";
 import Logo from "./Logo";
 import SearchModal from "./SearchModal";
-import { CATEGORIES, PEDIDOSYA_URL, WHATSAPP_URL } from "@/data/products";
+import { CATEGORIES, PEDIDOSYA_URL } from "@/data/products";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -55,15 +55,6 @@ export default function Navbar() {
               <Search size={18} />
             </button>
             <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden sm:flex p-2 text-gray-400 hover:text-gray-700 transition-colors"
-              aria-label="WhatsApp"
-            >
-              <MessageCircle size={18} />
-            </a>
-            <a
               href={PEDIDOSYA_URL}
               target="_blank"
               rel="noopener noreferrer"
@@ -98,9 +89,6 @@ export default function Navbar() {
               </Link>
             ))}
             <div className="pt-3 border-t border-gray-100 flex gap-3">
-              <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="flex-1 text-center text-sm py-2 rounded-lg border border-gray-200 text-gray-700 hover:border-gray-300 transition-colors">
-                WhatsApp
-              </a>
               <a href={PEDIDOSYA_URL} target="_blank" rel="noopener noreferrer" className="flex-1 text-center text-sm py-2 rounded-lg bg-violet-600 text-white font-semibold hover:bg-violet-700 transition-colors">
                 PedidosYa
               </a>

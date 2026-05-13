@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Logo from "./Logo";
-import { CATEGORIES, INSTAGRAM_URL, WHATSAPP_URL } from "@/data/products";
+import { CATEGORIES, INSTAGRAM_URL } from "@/data/products";
 
 export default function Footer() {
   return (
@@ -22,9 +22,6 @@ export default function Footer() {
           <div className="flex gap-4">
             <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-gray-400 hover:text-gray-700 transition-colors">
               Instagram
-            </a>
-            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-gray-400 hover:text-gray-700 transition-colors">
-              WhatsApp
             </a>
           </div>
         </div>
@@ -52,11 +49,6 @@ export default function Footer() {
                 Catálogo completo
               </Link>
             </li>
-            <li>
-              <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-gray-500 hover:text-violet-600 transition-colors">
-                Contacto
-              </a>
-            </li>
           </ul>
         </div>
 
@@ -71,9 +63,6 @@ export default function Footer() {
           >
             Abrir PedidosYa
           </a>
-          <p className="text-xs text-gray-400 mt-3 leading-relaxed">
-            También disponible por WhatsApp para pedidos especiales.
-          </p>
         </div>
       </div>
 

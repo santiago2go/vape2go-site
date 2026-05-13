@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Zap, Package, Shield } from "lucide-react";
 import HeroCarousel from "@/components/HeroCarousel";
 import ProductCard from "@/components/ProductCard";
-import { getBestsellers, CATEGORIES, PEDIDOSYA_URL, WHATSAPP_URL } from "@/data/products";
+import { getBestsellers, CATEGORIES, PEDIDOSYA_URL } from "@/data/products";
 
 export default function HomePage() {
   const bestsellers = getBestsellers(12);
@@ -56,7 +56,7 @@ export default function HomePage() {
           {[
             { step: "01", title: "Elige tu vape", desc: "Navega el catálogo y encuentra el desechable, pod o liquid que quieres.", color: "text-violet-600" },
             { step: "02", title: "Pide por PedidosYa", desc: "Abre PedidosYa, busca Vape 2 Go y agrega tus productos al carrito.", color: "text-blue-600" },
-            { step: "03", title: "Recíbelo rápido", desc: "Entrega a domicilio en Santiago. También puedes escribirnos por WhatsApp.", color: "text-emerald-600" },
+            { step: "03", title: "Recíbelo rápido", desc: "Entrega a domicilio en Santiago, rápido y seguro.", color: "text-emerald-600" },
           ].map(({ step, title, desc, color }) => (
             <div key={step} className="text-center space-y-3">
               <div className={`text-4xl font-normal ${color}`}>{step}</div>
@@ -65,12 +65,9 @@ export default function HomePage() {
             </div>
           ))}
         </div>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
+        <div className="flex justify-center mt-10">
           <a href={PEDIDOSYA_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center bg-violet-600 text-white font-semibold px-8 py-3 rounded-xl hover:bg-violet-700 transition-colors">
             Abrir PedidosYa
-          </a>
-          <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center border border-gray-200 text-gray-700 px-8 py-3 rounded-xl hover:border-gray-300 hover:text-gray-900 transition-colors">
-            Escribir por WhatsApp
           </a>
         </div>
       </section>
