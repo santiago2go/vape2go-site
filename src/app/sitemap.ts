@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getAllSlugs, CATEGORIES } from "@/data/products";
+import { BRANDS } from "@/data/brands";
 
 export const dynamic = "force-static";
 
@@ -20,10 +21,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
+  const brandUrls: MetadataRoute.Sitemap = BRANDS.map((b) => ({
+    url: `${BASE}/marca/${b.id}/`,
+    lastModified: new Date(),
+    changeFrequency: "weekly",
+    priority: 0.8,
+  }));
+
   return [
     { url: `${BASE}/`, lastModified: new Date(), changeFrequency: "daily", priority: 1.0 },
     { url: `${BASE}/catalogo/`, lastModified: new Date(), changeFrequency: "daily", priority: 0.9 },
     ...categoryUrls,
+    ...brandUrls,
     ...productUrls,
   ];
 }

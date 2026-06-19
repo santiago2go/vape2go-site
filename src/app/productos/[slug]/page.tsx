@@ -14,6 +14,7 @@ import {
   SITE_URL,
   type Category,
 } from "@/data/products";
+import { getBrandByName } from "@/data/brands";
 
 export function generateStaticParams() {
   return getAllSlugs().map((slug) => ({ slug }));
@@ -72,6 +73,7 @@ export default async function ProductPage({
 
   const catMeta = CATEGORIES.find((c) => c.id === product.category);
   const catStyle = CATEGORY_STYLES[product.category];
+  const brandMeta = getBrandByName(product.brand);
   const related = getProductsByCategory(product.category)
     .filter((p) => p.id !== product.id)
     .slice(0, 4);
@@ -185,7 +187,16 @@ export default async function ProductPage({
               )}
             </div>
 
-            <p className="text-xs text-gray-400 uppercase tracking-widest">{product.brand}</p>
+            {brandMeta ? (
+              <Link
+                href={`/marca/${brandMeta.id}/`}
+                className="text-xs text-violet-500 uppercase tracking-widest hover:text-violet-700 transition-colors"
+              >
+                {product.brand}
+              </Link>
+            ) : (
+              <p className="text-xs text-gray-400 uppercase tracking-widest">{product.brand}</p>
+            )}
             <h1 className="text-3xl font-normal text-gray-900 leading-tight">{product.name}</h1>
             <p className="text-xs text-gray-400">SKU: {product.sku}</p>
 
