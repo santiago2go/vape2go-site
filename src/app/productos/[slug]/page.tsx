@@ -11,6 +11,7 @@ import {
   getProductsByCategory,
   CATEGORIES,
   PEDIDOSYA_URL,
+  SITE_URL,
   type Category,
 } from "@/data/products";
 
@@ -26,16 +27,29 @@ export async function generateMetadata({
   const { slug } = await params;
   const product = getProductBySlug(slug);
   if (!product) return {};
+  const canonical = `${SITE_URL}/productos/${product.id}/`;
+  const description =
+    product.description ||
+    `Compra ${product.name} de ${product.brand} en Vape 2 Go. Entrega rápida en Santiago, RD.`;
   return {
     title: `${product.name} | Vape 2 Go`,
-    description:
-      product.description ||
-      `Compra ${product.name} de ${product.brand} en Vape 2 Go. Entrega rápida en Santiago, RD.`,
+    description,
     keywords: product.tags,
+    alternates: { canonical },
     openGraph: {
+      type: "website",
+      locale: "es_DO",
+      siteName: "Vape 2 Go",
       title: product.name,
-      description: product.description || `${product.brand} · ${product.category}`,
+      description,
+      url: canonical,
       images: product.image ? [{ url: product.image }] : [],
+    },
+    twitter: {
+      card: product.image ? "summary_large_image" : "summary",
+      title: product.name,
+      description,
+      images: product.image ? [product.image] : [],
     },
   };
 }
@@ -62,6 +76,8 @@ export default async function ProductPage({
     .filter((p) => p.id !== product.id)
     .slice(0, 4);
 
+  const productUrl = `${SITE_URL}/productos/${product.id}/`;
+
   const productSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -77,8 +93,31 @@ export default async function ProductPage({
       availability: product.disponible
         ? "https://schema.org/InStock"
         : "https://schema.org/OutOfStock",
-      url: `https://vapes.do/productos/${product.id}/`,
+      url: productUrl,
     },
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Inicio", item: `${SITE_URL}/` },
+      { "@type": "ListItem", position: 2, name: "Tienda", item: `${SITE_URL}/catalogo/` },
+      ...(catMeta
+        ? [{
+            "@type": "ListItem",
+            position: 3,
+            name: catMeta.label,
+            item: `${SITE_URL}/categoria/${product.category}/`,
+          }]
+        : []),
+      {
+        "@type": "ListItem",
+        position: catMeta ? 4 : 3,
+        name: product.name,
+        item: productUrl,
+      },
+    ],
   };
 
   return (
@@ -86,6 +125,10 @@ export default async function ProductPage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
       <div className="max-w-6xl mx-auto px-4 py-10 space-y-12">

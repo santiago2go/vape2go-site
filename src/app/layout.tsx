@@ -48,12 +48,25 @@ const localBusinessSchema = {
   name: "Vape 2 Go",
   description: "Tienda de vapes y e-cigarettes en Santiago, República Dominicana",
   url: "https://vapes.do",
+  // TODO: reemplazar por teléfono real público antes de promocionar (hoy placeholder)
   telephone: "+18094567890",
+  priceRange: "$$",
+  currenciesAccepted: "DOP",
   address: {
     "@type": "PostalAddress",
     addressLocality: "Santiago de los Caballeros",
     addressRegion: "Santiago",
     addressCountry: "DO",
+  },
+  // TODO: ajustar a las coordenadas reales de la base de Vape 2 Go (hoy centro de Santiago)
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 19.4517,
+    longitude: -70.697,
+  },
+  areaServed: {
+    "@type": "City",
+    name: "Santiago de los Caballeros",
   },
   sameAs: ["https://instagram.com/vape2go.rd"],
   openingHoursSpecification: [
