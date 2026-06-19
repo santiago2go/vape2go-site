@@ -31,7 +31,7 @@ const SLIDES = [
     title: "Desechables",
     titleAccent: "premium",
     titleAccentClass: "text-violet-600",
-    subtitle: "WAKA, Elf Bar, Geek Bar, Fume, Lost Mary. Hasta 15,000 puffs. Marcas 100% originales.",
+    subtitle: "WAKA, Geek Bar, HQD, Veev, Lost Mary. Hasta 30,000 puffs. Marcas 100% originales.",
     cta: "Ver desechables",
     ctaHref: "/categoria/desechables/",
     ctaExternal: false,

@@ -3,6 +3,7 @@
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 import { CATEGORIES, type Category } from "@/data/products";
+import { BRANDS } from "@/data/brands";
 
 export interface Filters {
   category: Category | "todas";
@@ -10,11 +11,8 @@ export interface Filters {
   soloDisponibles: boolean;
 }
 
-const KNOWN_BRANDS = [
-  "WAKA", "Elf Bar", "Geek Bar", "Fume", "Lost Mary",
-  "IQOS", "Heets", "Terea", "SMOK", "Vaporesso",
-  "Voopoo", "Uwell", "Bang", "Hyde",
-];
+// Marcas reales con productos en catálogo (mismas que tienen página /marca/).
+const KNOWN_BRANDS = BRANDS.map((b) => b.name);
 
 function Section({
   title,

@@ -39,14 +39,14 @@ export const CATEGORIES: CategoryMeta[] = [
     id: "desechables",
     label: "Desechables",
     icon: "💨",
-    description: "WAKA, Elf Bar, Geek Bar, Fume y más",
+    description: "WAKA, Geek Bar, HQD, Veev y más",
     color: "cat-desechables",
     seoTitle: "Vapes Desechables en Santiago, RD",
     intro:
-      "Los vapes desechables son la forma más fácil de empezar: vienen cargados, llenos y listos para usar, sin recargas ni mantenimiento. En Vape 2 Go encuentras las marcas más buscadas de República Dominicana —WAKA, Elf Bar, Geek Bar, Fume y más— en una variedad enorme de sabores y cantidades de puffs. Cada desechable está pensado para durar días de uso normal y desecharse al terminar. Compra online en Santiago de los Caballeros con entrega rápida el mismo día. Filtra por marca, sabor o cantidad de puffs y recibe tu vape favorito directo en tu puerta.",
+      "Los vapes desechables son la forma más fácil de empezar: vienen cargados, llenos y listos para usar, sin recargas ni mantenimiento. En Vape 2 Go encuentras las marcas más buscadas de República Dominicana —WAKA, Geek Bar, HQD, Veev, SWFT y más— en una variedad enorme de sabores y cantidades de puffs. Cada desechable está pensado para durar días de uso normal y desecharse al terminar. Compra online en Santiago de los Caballeros con entrega rápida el mismo día. Filtra por marca, sabor o cantidad de puffs y recibe tu vape favorito directo en tu puerta.",
     keywords: [
       "desechables vape rd", "vape desechable santiago", "waka vape dominicana",
-      "elf bar rd", "geek bar dominicana", "fume vape", "puff desechable rd",
+      "hqd rd", "geek bar dominicana", "veev rd", "puff desechable rd",
       "comprar vape desechable santiago",
     ],
   },

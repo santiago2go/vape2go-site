@@ -3,6 +3,7 @@ import { DM_Serif_Display, DM_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import AgeGate from "@/components/AgeGate";
 
 const dmSerifDisplay = DM_Serif_Display({
   subsets: ["latin"],
@@ -26,9 +27,9 @@ export const metadata: Metadata = {
     template: "%s | Vape 2 Go",
   },
   description:
-    "Compra desechables, pods, liquids y accesorios para vape en Santiago, República Dominicana. Entrega rápida por PedidosYa. WAKA, Elf Bar, Geek Bar, IQOS y más.",
+    "Compra desechables, pods, liquids y accesorios para vape en Santiago, República Dominicana. Entrega rápida por PedidosYa. WAKA, Geek Bar, HQD, Veev, IQOS y más.",
   keywords: [
-    "vape dominicana", "vape santiago rd", "desechables vape", "elf bar rd",
+    "vape dominicana", "vape santiago rd", "desechables vape", "hqd rd",
     "waka vape", "geek bar", "iqos dominicana", "liquids vape rd", "pods vape",
     "vape 2 go", "vapes.do",
   ],
@@ -89,6 +90,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
+        <AgeGate />
         <Navbar />
         <main>{children}</main>
         <Footer />
