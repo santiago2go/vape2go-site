@@ -13,8 +13,8 @@ export default function Logo({ size = 40 }: { size?: number }) {
         priority
       />
       <span
-        className="font-bold text-white hidden sm:block"
-        style={{ fontFamily: "var(--font-fredoka)", fontSize: size * 0.55 }}
+        className="text-gray-900 hidden sm:block"
+        style={{ fontFamily: "var(--font-heading)", fontSize: size * 0.55 }}
       >
         Vape 2 Go
       </span>

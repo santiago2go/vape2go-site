@@ -8,3 +8,6 @@ out/
 
 # Local Netlify folder
 .netlify
+
+# TS build info
+tsconfig.tsbuildinfo

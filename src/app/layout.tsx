@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AgeGate from "@/components/AgeGate";
+import Providers from "@/components/Providers";
 
 const dmSerifDisplay = DM_Serif_Display({
   subsets: ["latin"],
@@ -90,10 +91,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        <AgeGate />
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        <Providers>
+          <AgeGate />
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

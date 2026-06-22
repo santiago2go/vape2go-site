@@ -49,6 +49,16 @@ export default function Footer() {
                 Catálogo completo
               </Link>
             </li>
+            <li>
+              <Link href="/cuenta/" className="text-sm text-gray-500 hover:text-violet-600 transition-colors">
+                Mi cuenta
+              </Link>
+            </li>
+            <li>
+              <Link href="/entrar/" className="text-sm text-gray-500 hover:text-violet-600 transition-colors">
+                Entrar / Registrarme
+              </Link>
+            </li>
           </ul>
         </div>
 
@@ -66,7 +76,12 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-gray-200 py-4 text-center">
+      <div className="border-t border-gray-200 py-4 text-center space-y-2">
+        <div className="flex items-center justify-center gap-4 flex-wrap text-xs">
+          <Link href="/privacidad/" className="text-gray-400 hover:text-gray-700 transition-colors">Privacidad</Link>
+          <Link href="/terminos/" className="text-gray-400 hover:text-gray-700 transition-colors">Términos</Link>
+          <Link href="/privacidad-datos/" className="text-gray-400 hover:text-gray-700 transition-colors">Etiqueta de privacidad</Link>
+        </div>
         <p className="text-xs text-gray-400">
           © 2026 Vape 2 Go · Santiago, República Dominicana
         </p>

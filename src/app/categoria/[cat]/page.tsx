@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
+import TrackView from "@/components/TrackView";
 import {
   getProductsByCategory,
   CATEGORIES,
@@ -100,6 +101,7 @@ export default async function CategoryPage({
 
   return (
     <>
+      <TrackView event="view_listing" category={meta.id} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}

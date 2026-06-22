@@ -4,13 +4,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Check } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
+import TrackView from "@/components/TrackView";
+import OrderButton from "@/components/OrderButton";
 import VapePlaceholder from "@/components/VapePlaceholder";
 import {
   getProductBySlug,
   getAllSlugs,
   getProductsByCategory,
   CATEGORIES,
-  PEDIDOSYA_URL,
   SITE_URL,
   type Category,
 } from "@/data/products";
@@ -124,6 +125,7 @@ export default async function ProductPage({
 
   return (
     <>
+      <TrackView event="view_product" productId={product.id} category={product.category} brand={product.brand} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
@@ -205,14 +207,7 @@ export default async function ProductPage({
             )}
 
             {product.disponible ? (
-              <a
-                href={PEDIDOSYA_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block text-center font-semibold text-sm py-4 rounded-xl transition-colors bg-violet-600 text-white hover:bg-violet-700"
-              >
-                Pedir por PedidosYa
-              </a>
+              <OrderButton productId={product.id} />
             ) : (
               <span className="block text-center font-semibold text-sm py-4 rounded-xl bg-gray-100 text-gray-400 cursor-not-allowed">
                 No disponible

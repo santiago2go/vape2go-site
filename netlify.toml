@@ -2,9 +2,30 @@
   command = "npm run build"
   publish = "out"
 
+[functions]
+  # Capa de API segura (service_role, validación de Turnstile, órdenes).
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# ----------------------------------------------------------------------------
+# Cabeceras de seguridad (punto 3). Brotli/gzip los aplica Netlify automático.
+# Nota: 'unsafe-inline' en script/style es un compromiso conocido del export
+# estático de Next (hidratación + JSON-LD inline). El blindaje real está en
+# connect-src (a dónde puede hablar el sitio) y frame-ancestors.
+# ----------------------------------------------------------------------------
 [[headers]]
   for = "/*"
   [headers.values]
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+    Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
+    Permissions-Policy = "geolocation=(self), camera=(), microphone=(), payment=(self)"
+    Cross-Origin-Opener-Policy = "same-origin"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://us-assets.i.posthog.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://pedidosya.dhmedia.io https://images.deliveryhero.io https://res.cloudinary.com; font-src 'self' data:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://us.i.posthog.com https://us-assets.i.posthog.com https://*.ingest.us.sentry.io https://*.ingest.sentry.io https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"
+
+# Cachear los assets con hash de forma agresiva (inmutables)
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

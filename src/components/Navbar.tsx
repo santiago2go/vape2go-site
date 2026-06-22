@@ -1,15 +1,29 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { Search, Menu, X } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Search, Menu, X, User, LogOut, LayoutDashboard } from "lucide-react";
 import Logo from "./Logo";
 import SearchModal from "./SearchModal";
 import { CATEGORIES, PEDIDOSYA_URL } from "@/data/products";
+import { useAuth } from "@/lib/auth-context";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
+  const { session, isAdmin, signOut } = useAuth();
+  const router = useRouter();
+  const accountRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function onClick(e: MouseEvent) {
+      if (accountRef.current && !accountRef.current.contains(e.target as Node)) setAccountOpen(false);
+    }
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, []);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -54,6 +68,44 @@ export default function Navbar() {
             >
               <Search size={18} />
             </button>
+            {session ? (
+              <div className="relative" ref={accountRef}>
+                <button
+                  onClick={() => setAccountOpen((o) => !o)}
+                  className="p-2 text-gray-400 hover:text-gray-700 transition-colors"
+                  aria-label="Mi cuenta"
+                  aria-expanded={accountOpen}
+                >
+                  <User size={18} />
+                </button>
+                {accountOpen && (
+                  <div className="absolute right-0 mt-1 w-48 bg-white border border-gray-200 rounded-xl shadow-lg py-1.5 z-50">
+                    <Link href="/cuenta/" onClick={() => setAccountOpen(false)} className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">
+                      <User size={15} /> Mi cuenta
+                    </Link>
+                    {isAdmin && (
+                      <Link href="/admin/" onClick={() => setAccountOpen(false)} className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">
+                        <LayoutDashboard size={15} /> Panel admin
+                      </Link>
+                    )}
+                    <button
+                      onClick={() => { setAccountOpen(false); void signOut(); router.replace("/"); }}
+                      className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-500 hover:bg-gray-50 border-t border-gray-100 mt-1"
+                    >
+                      <LogOut size={15} /> Cerrar sesión
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link
+                href="/entrar/"
+                className="p-2 text-gray-400 hover:text-gray-700 transition-colors"
+                aria-label="Entrar"
+              >
+                <User size={18} />
+              </Link>
+            )}
             <a
               href={PEDIDOSYA_URL}
               target="_blank"

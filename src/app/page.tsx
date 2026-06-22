@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Zap, Package, Shield } from "lucide-react";
 import HeroCarousel from "@/components/HeroCarousel";
 import ProductCard from "@/components/ProductCard";
+import TrackView from "@/components/TrackView";
 import { getBestsellers, CATEGORIES, PEDIDOSYA_URL } from "@/data/products";
 
 export default function HomePage() {
@@ -9,6 +10,7 @@ export default function HomePage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 space-y-16">
+      <TrackView event="view_home" />
       {/* Hero */}
       <HeroCarousel />
 
