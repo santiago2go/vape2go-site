@@ -22,12 +22,13 @@ export async function generateMetadata({
   const meta = CATEGORIES.find((c) => c.id === cat);
   if (!meta) return {};
 
-  const title = `${meta.seoTitle} | Vape 2 Go`;
+  const ogTitle = `${meta.seoTitle} | Vape 2 Go`;
   const description = `Compra ${meta.label.toLowerCase()} en Vape 2 Go. ${meta.description}. Entrega rápida en Santiago, RD.`;
   const canonical = `${SITE_URL}/categoria/${meta.id}/`;
 
   return {
-    title,
+    // el template del layout agrega la marca una sola vez al <title>
+    title: meta.seoTitle,
     description,
     keywords: meta.keywords,
     alternates: { canonical },
@@ -35,13 +36,13 @@ export async function generateMetadata({
       type: "website",
       locale: "es_DO",
       siteName: "Vape 2 Go",
-      title,
+      title: ogTitle,
       description,
       url: canonical,
     },
     twitter: {
       card: "summary",
-      title,
+      title: ogTitle,
       description,
     },
   };
@@ -99,6 +100,16 @@ export default async function CategoryPage({
     },
   };
 
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: meta.faqs.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  };
+
   return (
     <>
       <TrackView event="view_listing" category={meta.id} />
@@ -109,6 +120,10 @@ export default async function CategoryPage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
       <div className="max-w-6xl mx-auto px-4 py-10 space-y-8">
@@ -160,6 +175,19 @@ export default async function CategoryPage({
             No hay productos en esta categoría todavía.
           </p>
         )}
+
+        {/* FAQ (AEO + rich results) */}
+        <section className="pt-8 border-t border-gray-100 max-w-3xl">
+          <h2 className="text-2xl font-normal text-gray-900 mb-6">Preguntas frecuentes</h2>
+          <div className="space-y-5">
+            {meta.faqs.map((f) => (
+              <div key={f.q}>
+                <h3 className="text-base font-semibold text-gray-900 mb-1.5">{f.q}</h3>
+                <p className="text-sm text-gray-500 leading-relaxed">{f.a}</p>
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
     </>
   );

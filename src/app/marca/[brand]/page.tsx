@@ -17,12 +17,13 @@ export async function generateMetadata({
   const meta = getBrandBySlug(brand);
   if (!meta) return {};
 
-  const title = `${meta.seoTitle} | Vape 2 Go`;
+  const ogTitle = `${meta.seoTitle} | Vape 2 Go`;
   const description = `Compra ${meta.name} original en Vape 2 Go, Santiago, RD. Entrega rápida el mismo día. ${meta.intro.slice(0, 90)}`;
   const canonical = `${SITE_URL}/marca/${meta.id}/`;
 
   return {
-    title,
+    // el template del layout agrega la marca una sola vez al <title>
+    title: meta.seoTitle,
     description,
     keywords: meta.keywords,
     alternates: { canonical },
@@ -30,11 +31,11 @@ export async function generateMetadata({
       type: "website",
       locale: "es_DO",
       siteName: "Vape 2 Go",
-      title,
+      title: ogTitle,
       description,
       url: canonical,
     },
-    twitter: { card: "summary", title, description },
+    twitter: { card: "summary", title: ogTitle, description },
   };
 }
 

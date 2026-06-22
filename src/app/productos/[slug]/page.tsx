@@ -34,7 +34,8 @@ export async function generateMetadata({
     product.description ||
     `Compra ${product.name} de ${product.brand} en Vape 2 Go. Entrega rápida en Santiago, RD.`;
   return {
-    title: `${product.name} | Vape 2 Go`,
+    // el template del layout ("%s | Vape 2 Go") agrega la marca una sola vez
+    title: product.name,
     description,
     keywords: product.tags,
     alternates: { canonical },

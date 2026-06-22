@@ -32,6 +32,8 @@ export interface CategoryMeta {
   intro: string;
   /** Keywords para meta keywords y refuerzo on-page. */
   keywords: string[];
+  /** Preguntas frecuentes — alimentan FAQPage JSON-LD (AEO) + sección visible. */
+  faqs: { q: string; a: string }[];
 }
 
 export const CATEGORIES: CategoryMeta[] = [
@@ -49,6 +51,12 @@ export const CATEGORIES: CategoryMeta[] = [
       "hqd rd", "geek bar dominicana", "veev rd", "puff desechable rd",
       "comprar vape desechable santiago",
     ],
+    faqs: [
+      { q: "¿Cuántos puffs dura un vape desechable?", a: "Depende del modelo: van desde ~600 hasta más de 10,000 puffs. En Vape 2 Go cada producto indica su cantidad de puffs para que elijas según tu uso. Un desechable de 5,000 puffs suele durar varios días de uso normal." },
+      { q: "¿Dónde comprar vapes desechables en Santiago, RD?", a: "En Vape 2 Go (vapes.do) compras desechables online con entrega rápida el mismo día en Santiago de los Caballeros. Tenemos WAKA, Geek Bar, HQD, Veev, SWFT y más marcas originales." },
+      { q: "¿Cuáles son las mejores marcas de desechables?", a: "Las más buscadas en RD son WAKA, Geek Bar, HQD y Veev, por su variedad de sabores, duración y consistencia. Todas están disponibles en nuestro catálogo." },
+      { q: "¿El vape desechable se recarga?", a: "No. El desechable viene cargado y lleno de fábrica; al terminarse se desecha. Si buscas recargar, mira nuestra sección de Pods y sistemas recargables." },
+    ],
   },
   {
     id: "pods",
@@ -63,6 +71,12 @@ export const CATEGORIES: CategoryMeta[] = [
       "pods vape rd", "iqos dominicana", "kit recargable vape santiago",
       "sistema pod rd", "dispositivo vape recargable", "iqos santiago rd",
       "comprar pod vape dominicana",
+    ],
+    faqs: [
+      { q: "¿Qué es un sistema pod y en qué se diferencia de un desechable?", a: "Un sistema pod es un dispositivo recargable: rellenas el líquido y reemplazas solo el pod o el coil, en vez de botar todo el aparato. A largo plazo cuesta menos por uso y te da más control sobre sabor y nicotina." },
+      { q: "¿Conviene un pod recargable o un desechable?", a: "Si vapeas a diario, el pod recargable sale más económico con el tiempo y genera menos desperdicio. El desechable es más cómodo para empezar o para uso ocasional." },
+      { q: "¿Venden IQOS en Santiago, RD?", a: "Sí. En Vape 2 Go encuentras dispositivos IQOS y sus consumibles (Heets, Terea) originales, con entrega rápida en Santiago de los Caballeros." },
+      { q: "¿Cada cuánto se cambia el pod o el coil?", a: "En general cada 1 a 2 semanas según el uso, o cuando notes sabor quemado o menos vapor. Cada modelo trae su recomendación." },
     ],
   },
   {
@@ -79,6 +93,11 @@ export const CATEGORIES: CategoryMeta[] = [
       "freebase vape rd", "liquido para vape santiago", "nic salt rd",
       "comprar e-liquid dominicana",
     ],
+    faqs: [
+      { q: "¿Cuál es la diferencia entre sales de nicotina y freebase?", a: "Las sales de nicotina dan un golpe más suave y absorción rápida, ideales para pods y nicotinas altas. El freebase produce más vapor y se usa en dispositivos más potentes. Elige según tu equipo y tu preferencia." },
+      { q: "¿Qué nivel de nicotina debo elegir?", a: "Para pods con sales, lo común es 20–50 mg. Para freebase en equipos potentes, 3–6 mg. Si vienes del cigarrillo, una nicotina más alta en sales suele satisfacer mejor. Te orientamos si nos escribes." },
+      { q: "¿Dónde comprar e-liquids en Santiago, RD?", a: "En Vape 2 Go (vapes.do) compras e-liquids, sales de nicotina y freebase originales con entrega rápida el mismo día en Santiago de los Caballeros." },
+    ],
   },
   {
     id: "accesorios",
@@ -93,6 +112,11 @@ export const CATEGORIES: CategoryMeta[] = [
       "heets rd", "terea dominicana", "accesorios iqos santiago",
       "coils vape rd", "repuestos vape dominicana", "heets santiago rd",
       "sticks tabaco calentado rd",
+    ],
+    faqs: [
+      { q: "¿Cuál es la diferencia entre Heets y Terea?", a: "Heets son los sticks para dispositivos IQOS con lámina (modelos anteriores), y Terea son los sticks diseñados para IQOS ILUMA, que calientan sin lámina. Cada uno funciona solo con su tipo de dispositivo." },
+      { q: "¿Venden Heets y Terea originales en Santiago, RD?", a: "Sí. En Vape 2 Go todos los Heets y Terea son originales con empaque sellado, disponibles en sus distintas selecciones de sabor, con entrega rápida en Santiago de los Caballeros." },
+      { q: "¿Qué accesorios necesito para mi vape?", a: "Depende del equipo: coils o resistencias de repuesto, cargadores y pods. En esta sección encuentras los consumibles y repuestos para mantener tu dispositivo siempre listo." },
     ],
   },
 ];

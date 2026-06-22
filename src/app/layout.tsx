@@ -40,6 +40,14 @@ export const metadata: Metadata = {
     siteName: "Vape 2 Go",
     title: "Vape 2 Go | Tu vape favorito en República Dominicana",
     description: "Los mejores desechables, pods y liquids. Entrega rápida en Santiago, RD.",
+    // TODO: reemplazar por un OG image propio de 1200×630 px (hoy usa el logo)
+    images: [{ url: "/logo.jpeg", width: 512, height: 512, alt: "Vape 2 Go" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Vape 2 Go | Tu vape favorito en República Dominicana",
+    description: "Desechables, pods y liquids con entrega rápida en Santiago, RD.",
+    images: ["/logo.jpeg"],
   },
   robots: { index: true, follow: true },
 };
