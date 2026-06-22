@@ -1,10 +1,18 @@
 "use client";
 
-import { useEffect, Suspense } from "react";
+import { useEffect, useRef, Suspense } from "react";
 import { usePathname } from "next/navigation";
-import { AuthProvider } from "@/lib/auth-context";
+import { AuthProvider, useAuth } from "@/lib/auth-context";
 import { track } from "@/lib/analytics";
 import { initMonitoring } from "@/lib/monitoring";
+
+type PostHogLite = {
+  identify: (id: string, props?: Record<string, unknown>) => void;
+  reset: () => void;
+};
+function ph(): PostHogLite | undefined {
+  return (window as unknown as { posthog?: PostHogLite }).posthog;
+}
 
 /**
  * Inicializa PostHog (si hay key) y Sentry una sola vez.
@@ -35,6 +43,30 @@ function PageViews() {
   return null;
 }
 
+/**
+ * Ata los eventos de PostHog al usuario logueado (identify) y limpia al salir
+ * (reset). Así el funnel se cruza con clientes reales, no solo sesiones anónimas.
+ */
+function PostHogIdentify() {
+  const { user, profile } = useAuth();
+  const identified = useRef<string | null>(null);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (user && identified.current !== user.id) {
+      ph()?.identify(user.id, {
+        email: user.email,
+        role: profile?.role,
+        name: profile?.full_name || undefined,
+      });
+      identified.current = user.id;
+    } else if (!user && identified.current) {
+      ph()?.reset();
+      identified.current = null;
+    }
+  }, [user, profile]);
+  return null;
+}
+
 export default function Providers({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     bootstrap();
@@ -45,6 +77,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       <Suspense fallback={null}>
         <PageViews />
       </Suspense>
+      <PostHogIdentify />
       {children}
     </AuthProvider>
   );
