@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 import { getSupabase } from "@/lib/supabase";
+import AddressBook from "@/components/AddressBook";
 
 interface Order {
   id: string;
@@ -75,6 +76,8 @@ export default function AccountPage() {
           → Ir al panel de administración
         </Link>
       )}
+
+      {session?.user?.id && <AddressBook userId={session.user.id} />}
 
       <h2 className="text-xl text-gray-900 mb-4" style={{ fontFamily: "var(--font-heading)" }}>Mis órdenes</h2>
       {loadingOrders ? (
