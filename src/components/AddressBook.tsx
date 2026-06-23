@@ -10,13 +10,14 @@ interface Address {
   line1: string;
   line2: string | null;
   delivery_notes: string | null;
+  phone: string | null;
   is_default: boolean;
 }
 
 const LABELS = ["Casa", "Trabajo", "Otro"];
-const EMPTY = { label: "Casa", line1: "", line2: "", delivery_notes: "" };
+const EMPTY = { label: "Casa", line1: "", line2: "", delivery_notes: "", phone: "" };
 
-export default function AddressBook({ userId }: { userId: string }) {
+export default function AddressBook({ userId, defaultPhone }: { userId: string; defaultPhone?: string | null }) {
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<string | "new" | null>(null);
@@ -29,7 +30,7 @@ export default function AddressBook({ userId }: { userId: string }) {
     if (!sb) { setLoading(false); return; }
     const { data, error } = await sb
       .from("addresses")
-      .select("id,label,line1,line2,delivery_notes,is_default")
+      .select("id,label,line1,line2,delivery_notes,phone,is_default")
       .order("is_default", { ascending: false })
       .order("created_at", { ascending: true });
     if (error) setError("No pudimos cargar tus direcciones.");
@@ -39,9 +40,9 @@ export default function AddressBook({ userId }: { userId: string }) {
 
   useEffect(() => { void load(); }, [load]);
 
-  function startNew() { setForm(EMPTY); setError(null); setEditing("new"); }
+  function startNew() { setForm({ ...EMPTY, phone: defaultPhone ?? "" }); setError(null); setEditing("new"); }
   function startEdit(a: Address) {
-    setForm({ label: a.label, line1: a.line1, line2: a.line2 ?? "", delivery_notes: a.delivery_notes ?? "" });
+    setForm({ label: a.label, line1: a.line1, line2: a.line2 ?? "", delivery_notes: a.delivery_notes ?? "", phone: a.phone ?? "" });
     setError(null);
     setEditing(a.id);
   }
@@ -56,6 +57,7 @@ export default function AddressBook({ userId }: { userId: string }) {
       line1: form.line1.trim(),
       line2: form.line2.trim() || null,
       delivery_notes: form.delivery_notes.trim() || null,
+      phone: form.phone.trim() || null,
     };
     let err = null;
     if (editing === "new") {
@@ -133,6 +135,7 @@ export default function AddressBook({ userId }: { userId: string }) {
                     </div>
                     <p className="text-sm text-gray-600 mt-0.5">{a.line1}</p>
                     {a.line2 && <p className="text-sm text-gray-500">{a.line2}</p>}
+                    {a.phone && <p className="text-xs text-gray-500 mt-0.5">Cel: {a.phone}</p>}
                     {a.delivery_notes && <p className="text-xs text-gray-400 mt-1">{a.delivery_notes}</p>}
                   </div>
                 </div>
@@ -203,6 +206,7 @@ function AddressForm({
       </label>
       <Input label="Dirección" value={form.line1} onChange={(v) => set("line1", v)} placeholder="Calle, número y sector" />
       <Input label="Apartamento, piso o casa (opcional)" value={form.line2} onChange={(v) => set("line2", v)} />
+      <Input label="Celular / WhatsApp" value={form.phone} onChange={(v) => set("phone", v)} placeholder="Contacto para la entrega" />
       <label className="block">
         <span className="block text-xs font-medium text-gray-600 mb-1.5">Referencias / indicaciones (opcional)</span>
         <textarea

@@ -77,7 +77,7 @@ export default function AccountPage() {
         </Link>
       )}
 
-      {session?.user?.id && <AddressBook userId={session.user.id} />}
+      {session?.user?.id && <AddressBook userId={session.user.id} defaultPhone={profile?.phone} />}
 
       <h2 className="text-xl text-gray-900 mb-4" style={{ fontFamily: "var(--font-heading)" }}>Mis órdenes</h2>
       {loadingOrders ? (
