@@ -50,6 +50,8 @@ export const metadata: Metadata = {
     images: ["/logo.jpeg"],
   },
   robots: { index: true, follow: true },
+  // Evita el 404 de /favicon.ico que el navegador pide por defecto (Lighthouse Best Practices)
+  icons: { icon: "/logo.jpeg", shortcut: "/logo.jpeg", apple: "/logo.jpeg" },
 };
 
 const localBusinessSchema = {
@@ -93,6 +95,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="es" className={`${dmSerifDisplay.variable} ${dmSans.variable}`}>
       <head>
+        {/* El CDN de las imágenes de producto (incl. la imagen LCP del hero). */}
+        <link rel="preconnect" href="https://pedidosya.dhmedia.io" crossOrigin="" />
+        <link rel="dns-prefetch" href="https://pedidosya.dhmedia.io" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}

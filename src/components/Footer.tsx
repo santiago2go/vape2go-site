@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Logo from "./Logo";
 import CategoryThumb from "./CategoryThumb";
-import { CATEGORIES, INSTAGRAM_URL, PEDIDOSYA_URL } from "@/data/products";
+import { CATEGORIES, INSTAGRAM_URL, PEDIDOSYA_URL } from "@/data/catalog-meta";
 
 export default function Footer() {
   return (
@@ -21,7 +21,7 @@ export default function Footer() {
             Tu vape favorito, donde estés. Entrega rápida en Santiago, RD vía PedidosYa.
           </p>
           <div className="flex gap-4">
-            <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-gray-400 hover:text-gray-700 transition-colors">
+            <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-gray-500 hover:text-gray-700 transition-colors">
               Instagram
             </a>
           </div>
@@ -80,11 +80,11 @@ export default function Footer() {
 
       <div className="border-t border-gray-200 py-4 text-center space-y-2">
         <div className="flex items-center justify-center gap-4 flex-wrap text-xs">
-          <Link href="/privacidad/" className="text-gray-400 hover:text-gray-700 transition-colors">Privacidad</Link>
-          <Link href="/terminos/" className="text-gray-400 hover:text-gray-700 transition-colors">Términos</Link>
-          <Link href="/privacidad-datos/" className="text-gray-400 hover:text-gray-700 transition-colors">Etiqueta de privacidad</Link>
+          <Link href="/privacidad/" className="text-gray-500 hover:text-gray-700 transition-colors">Privacidad</Link>
+          <Link href="/terminos/" className="text-gray-500 hover:text-gray-700 transition-colors">Términos</Link>
+          <Link href="/privacidad-datos/" className="text-gray-500 hover:text-gray-700 transition-colors">Etiqueta de privacidad</Link>
         </div>
-        <p className="text-xs text-gray-400">
+        <p className="text-xs text-gray-500">
           © 2026 Vape 2 Go · Santiago, República Dominicana
         </p>
       </div>

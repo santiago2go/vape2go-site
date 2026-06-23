@@ -1,6 +1,6 @@
 "use client";
 
-import { PEDIDOSYA_URL } from "@/data/products";
+import { PEDIDOSYA_URL } from "@/data/catalog-meta";
 import { track } from "@/lib/analytics";
 
 /**

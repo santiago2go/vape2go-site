@@ -7,7 +7,7 @@ import { Search, Menu, X, User, LogOut, LayoutDashboard } from "lucide-react";
 import Logo from "./Logo";
 import SearchModal from "./SearchModal";
 import CategoryThumb from "./CategoryThumb";
-import { CATEGORIES, PEDIDOSYA_URL } from "@/data/products";
+import { CATEGORIES, PEDIDOSYA_URL } from "@/data/catalog-meta";
 import { useAuth } from "@/lib/auth-context";
 
 export default function Navbar() {

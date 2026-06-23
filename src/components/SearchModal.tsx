@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Search, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { searchProducts, type Product } from "@/data/products";
+import { searchProducts, cdnImage, type Product } from "@/data/catalog-meta";
 
 export default function SearchModal({
   open,
@@ -15,7 +15,16 @@ export default function SearchModal({
 }) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Product[]>([]);
+  // El catálogo (~1MB) se carga por dynamic import SOLO al abrir el buscador, así
+  // no pesa en el bundle inicial del home.
+  const [catalog, setCatalog] = useState<Product[] | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (open && !catalog) {
+      import("@/data/products.json").then((m) => setCatalog(m.default as Product[]));
+    }
+  }, [open, catalog]);
 
   useEffect(() => {
     if (open) {
@@ -26,8 +35,8 @@ export default function SearchModal({
   }, [open]);
 
   useEffect(() => {
-    setResults(searchProducts(query));
-  }, [query]);
+    setResults(catalog ? searchProducts(catalog, query) : []);
+  }, [query, catalog]);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -73,6 +82,10 @@ export default function SearchModal({
             <p className="text-center text-xs text-gray-400 py-8">
               Escribe al menos 2 caracteres para buscar
             </p>
+          ) : !catalog ? (
+            <p className="text-center text-xs text-gray-400 py-8">
+              Cargando catálogo…
+            </p>
           ) : results.length === 0 ? (
             <p className="text-center text-xs text-gray-400 py-8">
               No encontramos &quot;{query}&quot;
@@ -87,7 +100,7 @@ export default function SearchModal({
               >
                 <div className="relative w-10 h-10 rounded-lg overflow-hidden bg-gray-100 shrink-0">
                   {p.image ? (
-                    <Image src={p.image} alt={p.name} fill className="object-contain p-1" />
+                    <Image src={cdnImage(p.image, 96)!} alt={p.name} fill className="object-contain p-1" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-lg">💨</div>
                   )}

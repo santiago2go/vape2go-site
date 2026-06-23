@@ -13,6 +13,7 @@ import {
   getProductsByCategory,
   CATEGORIES,
   SITE_URL,
+  cdnImage,
   type Category,
 } from "@/data/products";
 import { getBrandByName } from "@/data/brands";
@@ -160,7 +161,7 @@ export default async function ProductPage({
           <div className="card-light aspect-square flex items-center justify-center relative overflow-hidden bg-gray-50">
             {product.image ? (
               <Image
-                src={product.image}
+                src={cdnImage(product.image, 800)!}
                 alt={product.name}
                 fill
                 className="object-contain p-8"

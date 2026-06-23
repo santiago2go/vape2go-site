@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import VapePlaceholder from "./VapePlaceholder";
-import { type Product, type Category, PEDIDOSYA_URL } from "@/data/products";
+import { type Product, type Category, PEDIDOSYA_URL, cdnImage } from "@/data/catalog-meta";
 
 const CATEGORY_STYLES: Record<Category, { label: string; bg: string; text: string }> = {
   desechables: { label: "Desechable", bg: "bg-violet-100", text: "text-violet-700" },
@@ -23,7 +23,7 @@ export default function ProductCard({ product }: { product: Product }) {
       <Link href={`/productos/${product.id}/`} className="block relative aspect-square bg-gray-50 overflow-hidden">
         {product.image && !imgError ? (
           <Image
-            src={product.image}
+            src={cdnImage(product.image, 400)!}
             alt={product.name}
             fill
             className="object-contain p-3 group-hover:scale-105 transition-transform duration-300"

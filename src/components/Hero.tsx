@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Check } from "lucide-react";
-import { getHeroProducts, CATEGORIES, PEDIDOSYA_URL } from "@/data/products";
+import { getHeroProducts, CATEGORIES, PEDIDOSYA_URL, cdnImage } from "@/data/products";
 import CategoryThumb from "./CategoryThumb";
 
 const TRUST = [
@@ -71,16 +71,19 @@ export default function Hero() {
 
         {/* Ancla visual — best sellers reales */}
         <div className="grid grid-cols-2 gap-4">
-          {products.map((p) => (
+          {products.map((p, i) => (
             <Link
               key={p.id}
               href={`/productos/${p.id}/`}
               className="group relative aspect-square overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm hover:border-violet-200 hover:shadow-md transition-all"
             >
               <Image
-                src={p.image!}
+                src={cdnImage(p.image, 640)!}
                 alt={p.name}
                 fill
+                // La 1ra imagen del hero suele ser el LCP en mobile: la priorizamos
+                // (preload + sin lazy); las demás quedan lazy por defecto.
+                priority={i === 0}
                 className="object-contain p-5 group-hover:scale-105 transition-transform duration-300"
                 sizes="(max-width: 1024px) 45vw, 25vw"
               />

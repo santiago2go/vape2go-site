@@ -1,4 +1,4 @@
-import { type Category } from "@/data/products";
+import { type Category } from "@/data/catalog-meta";
 
 /**
  * Identificador visual de categoría: icono SVG genérico relleno en blanco sobre

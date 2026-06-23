@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { SlidersHorizontal, X } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
 import FilterSidebar, { type Filters } from "@/components/FilterSidebar";
-import { getAllProducts, type Category } from "@/data/products";
+import { type Category, type Product } from "@/data/catalog-meta";
 
 const PAGE_SIZE = 24;
 
@@ -17,7 +17,15 @@ const SORT_OPTIONS = [
 ];
 
 export default function CatalogoPage() {
-  const allProducts = useMemo(() => getAllProducts(), []);
+  // El catálogo (~1MB) se carga por dynamic import al montar /catalogo, no en el bundle del home.
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    import("@/data/products.json").then((m) => {
+      setAllProducts(m.default as Product[]);
+      setLoading(false);
+    });
+  }, []);
   const [filters, setFilters] = useState<Filters>({
     category: "todas",
     brands: [],
@@ -146,7 +154,11 @@ export default function CatalogoPage() {
           )}
 
           {/* Product grid */}
-          {visible.length > 0 ? (
+          {loading ? (
+            <div className="py-20 text-center">
+              <p className="text-gray-400 text-sm">Cargando productos…</p>
+            </div>
+          ) : visible.length > 0 ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
               {visible.map((product) => (
                 <ProductCard key={product.id} product={product} />

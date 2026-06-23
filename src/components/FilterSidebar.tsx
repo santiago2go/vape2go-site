@@ -2,7 +2,7 @@
 
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
-import { CATEGORIES, type Category } from "@/data/products";
+import { CATEGORIES, type Category } from "@/data/catalog-meta";
 import { BRANDS } from "@/data/brands";
 import CategoryThumb from "./CategoryThumb";
 
