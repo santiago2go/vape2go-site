@@ -27,8 +27,8 @@ export default function HomePage() {
             >
               <CategoryThumb
                 category={cat.id}
-                className="w-16 h-16 rounded-xl bg-gray-50 group-hover:bg-violet-50 transition-colors"
-                pad="p-2"
+                className="w-16 h-16 rounded-xl"
+                pad="p-3"
               />
               <div>
                 <h3 className="font-semibold text-gray-900 group-hover:text-violet-600 transition-colors">

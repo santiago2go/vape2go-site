@@ -138,7 +138,7 @@ export default function Navbar() {
                 onClick={() => setMenuOpen(false)}
                 className="flex items-center gap-2.5 py-2 text-sm text-gray-500 hover:text-gray-900 transition-colors"
               >
-                <CategoryThumb category={cat.id} className="w-6 h-6 rounded-lg bg-gray-50" />
+                <CategoryThumb category={cat.id} className="w-6 h-6 rounded-lg" />
                 {cat.label}
               </Link>
             ))}

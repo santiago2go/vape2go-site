@@ -110,7 +110,7 @@ export default function FilterSidebar({
                   onChange={() => set({ category: cat.id })}
                   className="accent-violet-600"
                 />
-                <CategoryThumb category={cat.id} className="w-5 h-5 rounded bg-white" />
+                <CategoryThumb category={cat.id} className="w-5 h-5 rounded" />
                 <span className={`text-sm transition-colors ${filters.category === cat.id ? "text-violet-700 font-medium" : "text-gray-600 group-hover:text-gray-900"}`}>
                   {cat.label}
                 </span>

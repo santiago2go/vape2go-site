@@ -139,7 +139,7 @@ export default async function CategoryPage({
 
         {/* Header */}
         <div className="flex items-center gap-4">
-          <CategoryThumb category={meta.id} className="w-16 h-16 rounded-xl bg-gray-50 shrink-0" pad="p-2" />
+          <CategoryThumb category={meta.id} className="w-16 h-16 rounded-xl shrink-0" pad="p-3" />
           <div>
             <h1 className="text-3xl font-normal text-gray-900">{meta.seoTitle}</h1>
             <p className="text-gray-500 mt-1 text-sm">
@@ -159,7 +159,7 @@ export default async function CategoryPage({
               href={`/categoria/${c.id}/`}
               className="inline-flex items-center gap-1.5 pl-1.5 pr-3 py-1 rounded-full text-xs border border-gray-200 text-gray-500 hover:border-violet-300 hover:text-violet-600 transition-colors"
             >
-              <CategoryThumb category={c.id} className="w-5 h-5 rounded-full bg-white" />
+              <CategoryThumb category={c.id} className="w-5 h-5 rounded-full" />
               {c.label}
             </Link>
           ))}

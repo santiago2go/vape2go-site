@@ -170,24 +170,6 @@ export function getBestsellers(limit = 12): Product[] {
 }
 
 /**
- * Imagen representativa de cada categoría: su best seller curado, o el primer
- * disponible con imagen. Reemplaza los emojis para identificar categorías.
- */
-export function getCategoryImage(cat: Category): string | undefined {
-  const curated = curatedBestsellers().find((p) => p.category === cat);
-  if (curated?.image) return curated.image;
-  return allProducts.find((p) => p.category === cat && p.disponible && p.image)?.image;
-}
-
-/** Precomputado una vez. Se reusa en home, hero, catálogo y footer. */
-export const CATEGORY_IMAGE: Record<Category, string | undefined> = {
-  desechables: getCategoryImage("desechables"),
-  pods: getCategoryImage("pods"),
-  liquids: getCategoryImage("liquids"),
-  accesorios: getCategoryImage("accesorios"),
-};
-
-/**
  * 4 productos para el ancla visual del hero: best sellers curados, intercalando
  * categoría para variedad visual. Rellena con disponibles si falta. Build time.
  */

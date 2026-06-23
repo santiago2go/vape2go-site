@@ -101,7 +101,7 @@ export default function Hero() {
             href={`/categoria/${cat.id}/`}
             className="inline-flex items-center gap-2 text-sm text-gray-700 bg-gray-50 hover:bg-violet-50 hover:text-violet-700 border border-gray-200 hover:border-violet-200 pl-1.5 pr-3.5 py-1.5 rounded-full transition-colors"
           >
-            <CategoryThumb category={cat.id} className="w-6 h-6 rounded-full bg-white" />
+            <CategoryThumb category={cat.id} className="w-6 h-6 rounded-full" pad="p-1" />
             {cat.label}
           </Link>
         ))}

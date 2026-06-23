@@ -34,7 +34,7 @@ export default function Footer() {
             {CATEGORIES.map((cat) => (
               <li key={cat.id}>
                 <Link href={`/categoria/${cat.id}/`} className="flex items-center gap-2 text-sm text-gray-500 hover:text-violet-600 transition-colors">
-                  <CategoryThumb category={cat.id} className="w-5 h-5 rounded bg-white" />
+                  <CategoryThumb category={cat.id} className="w-5 h-5 rounded" />
                   {cat.label}
                 </Link>
               </li>
