@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Zap, Package, Shield } from "lucide-react";
-import HeroCarousel from "@/components/HeroCarousel";
+import Hero from "@/components/Hero";
 import ProductCard from "@/components/ProductCard";
 import TrackView from "@/components/TrackView";
 import { getBestsellers, CATEGORIES, PEDIDOSYA_URL } from "@/data/products";
@@ -12,7 +12,7 @@ export default function HomePage() {
     <div className="max-w-6xl mx-auto px-4 py-8 space-y-16">
       <TrackView event="view_home" />
       {/* Hero */}
-      <HeroCarousel />
+      <Hero />
 
       {/* Category cards */}
       <section>
@@ -29,7 +29,7 @@ export default function HomePage() {
                 <h3 className="font-semibold text-gray-900 group-hover:text-violet-600 transition-colors">
                   {cat.label}
                 </h3>
-                <p className="text-xs text-gray-400 mt-1">{cat.description}</p>
+                <p className="text-xs text-gray-500 mt-1">{cat.description}</p>
               </div>
             </Link>
           ))}
