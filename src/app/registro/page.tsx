@@ -10,7 +10,16 @@ import GoogleButton from "@/components/GoogleButton";
 
 export default function RegisterPage() {
   const { signUp } = useAuth();
-  const [form, setForm] = useState({ fullName: "", email: "", phone: "", password: "" });
+  const [form, setForm] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+    password: "",
+    addressLabel: "Casa",
+    addressLine1: "",
+    addressLine2: "",
+    deliveryNotes: "",
+  });
   const [consent, setConsent] = useState(false);
   const [terms, setTerms] = useState(false);
   const [token, setToken] = useState<string | null>(null);
@@ -26,6 +35,8 @@ export default function RegisterPage() {
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    if (!form.phone.trim()) { setError("Necesitamos tu celular para coordinar la entrega."); return; }
+    if (!form.addressLine1.trim()) { setError("Agrega tu dirección de entrega."); return; }
     if (!terms) { setError("Debes aceptar los Términos y la Política de Privacidad para continuar."); return; }
     if (!token) { setError("Completa la verificación de seguridad."); return; }
     if (form.password.length < 8) { setError("La contraseña debe tener al menos 8 caracteres."); return; }
@@ -35,6 +46,10 @@ export default function RegisterPage() {
       password: form.password,
       fullName: form.fullName.trim(),
       phone: form.phone.trim(),
+      addressLine1: form.addressLine1.trim(),
+      addressLine2: form.addressLine2.trim(),
+      deliveryNotes: form.deliveryNotes.trim(),
+      addressLabel: form.addressLabel,
       marketingConsent: consent,
       termsAccepted: terms,
       captchaToken: token ?? undefined,
@@ -66,8 +81,27 @@ export default function RegisterPage() {
         <form onSubmit={onSubmit} className="space-y-4">
           <Field label="Nombre completo" value={form.fullName} onChange={(v) => set("fullName", v)} autoComplete="name" />
           <Field label="Correo electrónico" type="email" value={form.email} onChange={(v) => set("email", v)} required autoComplete="email" />
-          <Field label="Teléfono (WhatsApp)" type="tel" value={form.phone} onChange={(v) => set("phone", v)} autoComplete="tel" />
+          <Field label="Celular (WhatsApp)" type="tel" value={form.phone} onChange={(v) => set("phone", v)} required autoComplete="tel" hint="Lo usamos para coordinar tu entrega" />
           <Field label="Contraseña" type="password" value={form.password} onChange={(v) => set("password", v)} required autoComplete="new-password" hint="Mínimo 8 caracteres" />
+
+          {/* Dirección de entrega */}
+          <div className="pt-2 mt-2 border-t border-gray-100 space-y-4">
+            <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">Dirección de entrega</p>
+            <SelectField
+              label="Nombre de la dirección"
+              value={form.addressLabel}
+              onChange={(v) => set("addressLabel", v)}
+              options={["Casa", "Trabajo", "Otro"]}
+            />
+            <Field label="Dirección" value={form.addressLine1} onChange={(v) => set("addressLine1", v)} required autoComplete="address-line1" hint="Calle, número y sector" />
+            <Field label="Apartamento, piso o casa" value={form.addressLine2} onChange={(v) => set("addressLine2", v)} autoComplete="address-line2" hint="Opcional" />
+            <TextareaField
+              label="Referencias / indicaciones de entrega"
+              value={form.deliveryNotes}
+              onChange={(v) => set("deliveryNotes", v)}
+              hint="Opcional — punto de referencia, color de la casa, portón, etc."
+            />
+          </div>
 
           <label className="flex items-start gap-2.5 text-xs text-gray-600 leading-relaxed">
             <input type="checkbox" checked={terms} onChange={(e) => setTerms(e.target.checked)} className="mt-0.5 accent-violet-600" required />
@@ -117,6 +151,42 @@ function Field({ label, type = "text", value, onChange, required, autoComplete, 
         autoComplete={autoComplete}
         onChange={(e) => onChange(e.target.value)}
         className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+      />
+      {hint && <span className="block text-[11px] text-gray-400 mt-1">{hint}</span>}
+    </label>
+  );
+}
+
+function SelectField({ label, value, onChange, options }: {
+  label: string; value: string; onChange: (v: string) => void; options: string[];
+}) {
+  return (
+    <label className="block">
+      <span className="block text-xs font-medium text-gray-600 mb-1.5">{label}</span>
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+      >
+        {options.map((o) => (
+          <option key={o} value={o}>{o}</option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+function TextareaField({ label, value, onChange, hint }: {
+  label: string; value: string; onChange: (v: string) => void; hint?: string;
+}) {
+  return (
+    <label className="block">
+      <span className="block text-xs font-medium text-gray-600 mb-1.5">{label}</span>
+      <textarea
+        value={value}
+        rows={2}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent resize-none"
       />
       {hint && <span className="block text-[11px] text-gray-400 mt-1">{hint}</span>}
     </label>

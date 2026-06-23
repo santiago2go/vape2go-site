@@ -387,3 +387,41 @@ from public.orders o
 join public.affiliates a on a.code = o.affiliate_code
 where o.status in ('paid','shipped','delivered')
 group by o.affiliate_code, a.business_name;
+
+-- ============================================================================
+-- Migración 0004: dirección de entrega en el perfil (capturada en el registro)
+-- ============================================================================
+alter table public.profiles add column if not exists address_line1  text;
+alter table public.profiles add column if not exists address_line2  text;
+alter table public.profiles add column if not exists delivery_notes text;
+alter table public.profiles add column if not exists address_label  text;
+
+create or replace function public.handle_new_user()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  insert into public.profiles (
+    id, email, full_name, phone,
+    address_line1, address_line2, delivery_notes, address_label,
+    age_verified, marketing_consent, terms_accepted_at
+  )
+  values (
+    new.id,
+    new.email,
+    coalesce(new.raw_user_meta_data->>'full_name', ''),
+    coalesce(new.raw_user_meta_data->>'phone', ''),
+    nullif(new.raw_user_meta_data->>'address_line1', ''),
+    nullif(new.raw_user_meta_data->>'address_line2', ''),
+    nullif(new.raw_user_meta_data->>'delivery_notes', ''),
+    nullif(new.raw_user_meta_data->>'address_label', ''),
+    coalesce((new.raw_user_meta_data->>'age_verified')::boolean, false),
+    coalesce((new.raw_user_meta_data->>'marketing_consent')::boolean, false),
+    case when (new.raw_user_meta_data->>'terms_accepted')::boolean then now() else null end
+  )
+  on conflict (id) do nothing;
+  return new;
+end;
+$$;

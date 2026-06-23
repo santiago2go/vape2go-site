@@ -42,6 +42,10 @@ interface SignUpArgs {
   password: string;
   fullName?: string;
   phone?: string;
+  addressLine1?: string;
+  addressLine2?: string;
+  deliveryNotes?: string;
+  addressLabel?: string;
   marketingConsent?: boolean;
   termsAccepted?: boolean;
   captchaToken?: string;
@@ -109,7 +113,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 
   const signUp = useCallback(
-    async ({ email, password, fullName, phone, marketingConsent, termsAccepted, captchaToken }: SignUpArgs) => {
+    async ({ email, password, fullName, phone, addressLine1, addressLine2, deliveryNotes, addressLabel, marketingConsent, termsAccepted, captchaToken }: SignUpArgs) => {
       if (!supabase) return { error: "Auth no configurado", needsConfirmation: false };
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -118,6 +122,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           data: {
             full_name: fullName ?? "",
             phone: phone ?? "",
+            address_line1: addressLine1 ?? "",
+            address_line2: addressLine2 ?? "",
+            delivery_notes: deliveryNotes ?? "",
+            address_label: addressLabel ?? "",
             age_verified: true, // ya pasó el AgeGate 18+ para llegar aquí
             marketing_consent: marketingConsent ?? false,
             terms_accepted: termsAccepted ?? false,

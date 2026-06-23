@@ -1,13 +1,14 @@
 import Link from "next/link";
-import { Zap, Package, Shield } from "lucide-react";
+import { Zap, Package, Shield, ArrowRight } from "lucide-react";
 import Hero from "@/components/Hero";
 import ProductCard from "@/components/ProductCard";
 import TrackView from "@/components/TrackView";
 import CategoryThumb from "@/components/CategoryThumb";
-import { getBestsellers, CATEGORIES, PEDIDOSYA_URL } from "@/data/products";
+import { getBestsellers, getAllProducts, CATEGORIES, PEDIDOSYA_URL } from "@/data/products";
 
 export default function HomePage() {
   const bestsellers = getBestsellers(12);
+  const disponibles = getAllProducts().filter((p) => p.disponible).length;
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 space-y-16">
@@ -43,16 +44,33 @@ export default function HomePage() {
 
       {/* Bestsellers */}
       <section>
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between gap-4 mb-6">
           <h2 className="text-2xl font-normal text-gray-900">Productos destacados</h2>
-          <Link href="/catalogo/" className="text-sm text-violet-600 hover:text-violet-800 transition-colors">
-            Ver todos →
+          <Link
+            href="/catalogo/"
+            className="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-violet-600 hover:text-violet-800 transition-colors shrink-0"
+          >
+            Ver catálogo completo <ArrowRight size={16} />
           </Link>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {bestsellers.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
+        </div>
+
+        {/* CTA explícito: motiva a navegar todo el catálogo */}
+        <div className="mt-10 flex flex-col items-center gap-3 text-center">
+          <Link
+            href="/catalogo/"
+            className="group inline-flex items-center justify-center gap-2 bg-violet-600 text-white font-semibold text-base px-8 py-4 rounded-xl shadow-lg shadow-violet-600/25 hover:bg-violet-700 transition-all"
+          >
+            Explorar los {disponibles} productos
+            <ArrowRight size={18} className="group-hover:translate-x-0.5 transition-transform" />
+          </Link>
+          <p className="text-sm text-gray-500">
+            Desechables, pods, liquids y accesorios — filtra por marca, sabor o precio.
+          </p>
         </div>
       </section>
 
