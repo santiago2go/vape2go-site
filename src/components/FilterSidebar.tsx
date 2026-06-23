@@ -4,6 +4,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 import { CATEGORIES, type Category } from "@/data/products";
 import { BRANDS } from "@/data/brands";
+import CategoryThumb from "./CategoryThumb";
 
 export interface Filters {
   category: Category | "todas";
@@ -109,8 +110,9 @@ export default function FilterSidebar({
                   onChange={() => set({ category: cat.id })}
                   className="accent-violet-600"
                 />
+                <CategoryThumb category={cat.id} className="w-5 h-5 rounded bg-white" />
                 <span className={`text-sm transition-colors ${filters.category === cat.id ? "text-violet-700 font-medium" : "text-gray-600 group-hover:text-gray-900"}`}>
-                  {cat.icon} {cat.label}
+                  {cat.label}
                 </span>
               </label>
             </li>

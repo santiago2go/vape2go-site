@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Search, Menu, X, User, LogOut, LayoutDashboard } from "lucide-react";
 import Logo from "./Logo";
 import SearchModal from "./SearchModal";
+import CategoryThumb from "./CategoryThumb";
 import { CATEGORIES, PEDIDOSYA_URL } from "@/data/products";
 import { useAuth } from "@/lib/auth-context";
 
@@ -135,9 +136,10 @@ export default function Navbar() {
                 key={cat.id}
                 href={`/categoria/${cat.id}/`}
                 onClick={() => setMenuOpen(false)}
-                className="block py-2 text-sm text-gray-500 hover:text-gray-900 transition-colors"
+                className="flex items-center gap-2.5 py-2 text-sm text-gray-500 hover:text-gray-900 transition-colors"
               >
-                {cat.icon} {cat.label}
+                <CategoryThumb category={cat.id} className="w-6 h-6 rounded-lg bg-gray-50" />
+                {cat.label}
               </Link>
             ))}
             <div className="pt-3 border-t border-gray-100 flex gap-3">

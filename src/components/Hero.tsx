@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Check } from "lucide-react";
 import { getHeroProducts, CATEGORIES, PEDIDOSYA_URL } from "@/data/products";
+import CategoryThumb from "./CategoryThumb";
 
 const TRUST = [
   "100% originales",
@@ -98,9 +99,9 @@ export default function Hero() {
           <Link
             key={cat.id}
             href={`/categoria/${cat.id}/`}
-            className="inline-flex items-center gap-1.5 text-sm text-gray-700 bg-gray-50 hover:bg-violet-50 hover:text-violet-700 border border-gray-200 hover:border-violet-200 px-3 py-1.5 rounded-full transition-colors"
+            className="inline-flex items-center gap-2 text-sm text-gray-700 bg-gray-50 hover:bg-violet-50 hover:text-violet-700 border border-gray-200 hover:border-violet-200 pl-1.5 pr-3.5 py-1.5 rounded-full transition-colors"
           >
-            <span aria-hidden>{cat.icon}</span>
+            <CategoryThumb category={cat.id} className="w-6 h-6 rounded-full bg-white" />
             {cat.label}
           </Link>
         ))}

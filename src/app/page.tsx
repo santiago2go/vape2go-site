@@ -3,6 +3,7 @@ import { Zap, Package, Shield } from "lucide-react";
 import Hero from "@/components/Hero";
 import ProductCard from "@/components/ProductCard";
 import TrackView from "@/components/TrackView";
+import CategoryThumb from "@/components/CategoryThumb";
 import { getBestsellers, CATEGORIES, PEDIDOSYA_URL } from "@/data/products";
 
 export default function HomePage() {
@@ -24,7 +25,11 @@ export default function HomePage() {
               href={`/categoria/${cat.id}/`}
               className="card-light p-5 flex flex-col gap-3 hover:border-violet-300 hover:shadow-md hover:shadow-violet-100/40 transition-all duration-200 group"
             >
-              <span className="text-3xl">{cat.icon}</span>
+              <CategoryThumb
+                category={cat.id}
+                className="w-16 h-16 rounded-xl bg-gray-50 group-hover:bg-violet-50 transition-colors"
+                pad="p-2"
+              />
               <div>
                 <h3 className="font-semibold text-gray-900 group-hover:text-violet-600 transition-colors">
                   {cat.label}
@@ -77,16 +82,16 @@ export default function HomePage() {
       {/* Trust bar */}
       <section className="grid grid-cols-1 sm:grid-cols-3 gap-6">
         {[
-          { icon: Zap, title: "Entrega rápida", desc: "Pedidos por PedidosYa directo a tu puerta en Santiago.", iconClass: "text-violet-600 bg-violet-50" },
-          { icon: Shield, title: "Marcas originales", desc: "Solo productos 100% auténticos. Sin réplicas ni imitaciones.", iconClass: "text-blue-600 bg-blue-50" },
-          { icon: Package, title: "Amplio catálogo", desc: "Más de 600 productos entre desechables, pods, liquids y accesorios.", iconClass: "text-emerald-600 bg-emerald-50" },
-        ].map(({ icon: Icon, title, desc, iconClass }) => (
-          <div key={title} className="card-light p-6 flex gap-4 items-start hover:border-gray-300 transition-colors">
-            <div className={`p-2.5 rounded-xl shrink-0 ${iconClass}`}>
-              <Icon size={20} />
+          { icon: Zap, title: "Entrega rápida", desc: "Pedidos por PedidosYa directo a tu puerta en Santiago.", gradient: "from-violet-500 to-violet-700" },
+          { icon: Shield, title: "Marcas originales", desc: "Solo productos 100% auténticos. Sin réplicas ni imitaciones.", gradient: "from-blue-500 to-blue-700" },
+          { icon: Package, title: "Amplio catálogo", desc: "Más de 600 productos entre desechables, pods, liquids y accesorios.", gradient: "from-emerald-500 to-emerald-700" },
+        ].map(({ icon: Icon, title, desc, gradient }) => (
+          <div key={title} className="card-light p-6 flex gap-4 items-start hover:border-gray-300 hover:shadow-md transition-all">
+            <div className={`grid place-items-center w-14 h-14 rounded-2xl shrink-0 bg-gradient-to-br ${gradient} text-white shadow-sm`}>
+              <Icon size={26} />
             </div>
             <div>
-              <h4 className="font-semibold text-gray-900">{title}</h4>
+              <h4 className="font-semibold text-gray-900 text-lg">{title}</h4>
               <p className="text-sm text-gray-500 mt-1 leading-relaxed">{desc}</p>
             </div>
           </div>

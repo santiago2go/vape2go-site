@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Logo from "./Logo";
+import CategoryThumb from "./CategoryThumb";
 import { CATEGORIES, INSTAGRAM_URL, PEDIDOSYA_URL } from "@/data/products";
 
 export default function Footer() {
@@ -32,8 +33,9 @@ export default function Footer() {
           <ul className="space-y-2">
             {CATEGORIES.map((cat) => (
               <li key={cat.id}>
-                <Link href={`/categoria/${cat.id}/`} className="text-sm text-gray-500 hover:text-violet-600 transition-colors">
-                  {cat.icon} {cat.label}
+                <Link href={`/categoria/${cat.id}/`} className="flex items-center gap-2 text-sm text-gray-500 hover:text-violet-600 transition-colors">
+                  <CategoryThumb category={cat.id} className="w-5 h-5 rounded bg-white" />
+                  {cat.label}
                 </Link>
               </li>
             ))}

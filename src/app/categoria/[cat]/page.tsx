@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
 import TrackView from "@/components/TrackView";
+import CategoryThumb from "@/components/CategoryThumb";
 import {
   getProductsByCategory,
   CATEGORIES,
@@ -138,7 +139,7 @@ export default async function CategoryPage({
 
         {/* Header */}
         <div className="flex items-center gap-4">
-          <span className="text-4xl">{meta.icon}</span>
+          <CategoryThumb category={meta.id} className="w-16 h-16 rounded-xl bg-gray-50 shrink-0" pad="p-2" />
           <div>
             <h1 className="text-3xl font-normal text-gray-900">{meta.seoTitle}</h1>
             <p className="text-gray-500 mt-1 text-sm">
@@ -156,9 +157,10 @@ export default async function CategoryPage({
             <Link
               key={c.id}
               href={`/categoria/${c.id}/`}
-              className="px-3 py-1.5 rounded-full text-xs border border-gray-200 text-gray-500 hover:border-violet-300 hover:text-violet-600 transition-colors"
+              className="inline-flex items-center gap-1.5 pl-1.5 pr-3 py-1 rounded-full text-xs border border-gray-200 text-gray-500 hover:border-violet-300 hover:text-violet-600 transition-colors"
             >
-              {c.icon} {c.label}
+              <CategoryThumb category={c.id} className="w-5 h-5 rounded-full bg-white" />
+              {c.label}
             </Link>
           ))}
         </div>

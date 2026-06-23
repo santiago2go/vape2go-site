@@ -177,7 +177,7 @@ export default async function ProductPage({
             {/* Badges */}
             <div className="flex gap-2 flex-wrap">
               <span className={`text-xs font-semibold px-3 py-1 rounded-full ${catStyle.bg} ${catStyle.text}`}>
-                {catMeta?.icon} {catStyle.label}
+                {catStyle.label}
               </span>
               {product.disponible ? (
                 <span className="text-xs font-semibold px-3 py-1 rounded-full bg-green-50 text-green-700">
