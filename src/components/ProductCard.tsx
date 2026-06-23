@@ -52,7 +52,7 @@ export default function ProductCard({ product }: { product: Product }) {
               Disponible
             </span>
           ) : (
-            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-gray-100 text-gray-400">
+            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">
               Agotado
             </span>
           )}
@@ -66,7 +66,7 @@ export default function ProductCard({ product }: { product: Product }) {
         </Link>
 
         {/* Brand */}
-        <p className="text-xs text-gray-400">{product.brand}</p>
+        <p className="text-xs text-gray-500">{product.brand}</p>
 
         {/* Price */}
         {product.price > 0 && (

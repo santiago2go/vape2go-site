@@ -63,7 +63,7 @@ export default function Navbar() {
           <div className="flex items-center gap-1">
             <button
               onClick={() => setSearchOpen(true)}
-              className="p-2 text-gray-400 hover:text-gray-700 transition-colors"
+              className="p-2 text-gray-500 hover:text-gray-900 transition-colors"
               aria-label="Buscar"
             >
               <Search size={18} />
@@ -72,7 +72,7 @@ export default function Navbar() {
               <div className="relative" ref={accountRef}>
                 <button
                   onClick={() => setAccountOpen((o) => !o)}
-                  className="p-2 text-gray-400 hover:text-gray-700 transition-colors"
+                  className="p-2 text-gray-500 hover:text-gray-900 transition-colors"
                   aria-label="Mi cuenta"
                   aria-expanded={accountOpen}
                 >
@@ -100,7 +100,7 @@ export default function Navbar() {
             ) : (
               <Link
                 href="/entrar/"
-                className="p-2 text-gray-400 hover:text-gray-700 transition-colors"
+                className="p-2 text-gray-500 hover:text-gray-900 transition-colors"
                 aria-label="Entrar"
               >
                 <User size={18} />
@@ -115,7 +115,7 @@ export default function Navbar() {
               Pedir ahora
             </a>
             <button
-              className="md:hidden p-2 text-gray-400 hover:text-gray-700 transition-colors"
+              className="md:hidden p-2 text-gray-500 hover:text-gray-900 transition-colors"
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label="Menú"
             >

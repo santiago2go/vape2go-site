@@ -64,7 +64,7 @@ export default function AgeGate() {
             No, soy menor — salir
           </button>
         </div>
-        <p className="text-[11px] text-gray-400 pt-1">
+        <p className="text-xs text-gray-500 pt-1">
           El consumo de nicotina es perjudicial para la salud.
         </p>
       </div>

@@ -61,6 +61,23 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading), serif;
   }
+
+  /* Focus visible global (WCAG 2.4.7). Solo aparece con teclado, no con mouse. */
+  a:focus-visible,
+  button:focus-visible,
+  [role="button"]:focus-visible,
+  [tabindex]:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  /* No mostrar el outline con mouse/touch en navegadores sin :focus-visible */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
 }
 
 @layer utilities {
