@@ -60,27 +60,32 @@ const localBusinessSchema = {
   name: "Vape 2 Go",
   description: "Tienda de vapes y e-cigarettes en Santiago, República Dominicana",
   url: "https://vapes.do",
-  // TODO: reemplazar por teléfono real público antes de promocionar (hoy placeholder)
-  telephone: "+18094567890",
+  // TODO: agregar el WhatsApp/teléfono público real cuando esté listo (se removió el placeholder falso).
   priceRange: "$$",
   currenciesAccepted: "DOP",
   address: {
     "@type": "PostalAddress",
+    streetAddress: "Plaza Comercial Bolívar, primer piso, Padre Las Casas",
     addressLocality: "Santiago de los Caballeros",
     addressRegion: "Santiago",
+    postalCode: "51000",
     addressCountry: "DO",
   },
-  // TODO: ajustar a las coordenadas reales de la base de Vape 2 Go (hoy centro de Santiago)
+  // Plaza Comercial Bolívar (Rey Fitness Gym, Plus Code F8M6+34M), Padre Las Casas, Santiago.
   geo: {
     "@type": "GeoCoordinates",
-    latitude: 19.4517,
-    longitude: -70.697,
+    latitude: 19.482707,
+    longitude: -70.6897094,
   },
   areaServed: {
     "@type": "City",
     name: "Santiago de los Caballeros",
   },
-  sameAs: ["https://instagram.com/vape2go.rd"],
+  sameAs: [
+    "https://instagram.com/vape2go.do",
+    "https://www.tiktok.com/@vape2go.do",
+    "https://www.facebook.com/vape2go.do",
+  ],
   openingHoursSpecification: [
     {
       "@type": "OpeningHoursSpecification",

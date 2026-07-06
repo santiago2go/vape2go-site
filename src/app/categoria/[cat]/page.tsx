@@ -24,7 +24,8 @@ export async function generateMetadata({
   if (!meta) return {};
 
   const ogTitle = `${meta.seoTitle} | Vape 2 Go`;
-  const description = `Compra ${meta.label.toLowerCase()} en Vape 2 Go. ${meta.description}. Entrega rápida en Santiago, RD.`;
+  const available = getProductsByCategory(cat as Category).filter((p) => p.disponible).length;
+  const description = `${meta.label} para vape en Santiago, RD — ${available}+ en stock (${meta.description}). Entrega el mismo día, compra online en Vape 2 Go.`;
   const canonical = `${SITE_URL}/categoria/${meta.id}/`;
 
   return {

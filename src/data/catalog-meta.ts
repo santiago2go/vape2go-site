@@ -162,5 +162,7 @@ export function cdnImage(url: string | undefined, width: number): string | undef
 
 export const SITE_URL = "https://vapes.do";
 export const PEDIDOSYA_URL = "http://bit.ly/4nPE2yE";
+// TODO: número real de WhatsApp de Vape 2 Go (hoy placeholder; no se renderiza en UI aún)
 export const WHATSAPP_URL = "https://wa.me/18094567890";
-export const INSTAGRAM_URL = "https://instagram.com/vape2go.rd";
+export const INSTAGRAM_URL = "https://instagram.com/vape2go.do";
+export const TIKTOK_URL = "https://www.tiktok.com/@vape2go.do";
