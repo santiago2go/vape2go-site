@@ -8,6 +8,10 @@ export interface BrandMeta {
   seoTitle: string;
   intro: string;
   keywords: string[];
+  /** Meta description propia (CTR). Si falta, se genera desde el nombre + stock. */
+  metaDescription?: string;
+  /** Preguntas frecuentes de la marca — FAQPage JSON-LD (AEO) + sección visible. */
+  faqs?: { q: string; a: string }[];
 }
 
 // Solo marcas reales con volumen de stock. El orden define prioridad en listados.
@@ -15,10 +19,18 @@ export const BRANDS: BrandMeta[] = [
   {
     id: "veev",
     name: "Veev",
-    seoTitle: "Veev en Santiago, RD — Desechables y Pods",
+    seoTitle: "Veev en Santiago, RD — Veev Now, Veev One e Inprime",
+    metaDescription:
+      "Veev original en Santiago, RD: Veev Now (hasta 8,000 puffs), Veev Now Classic 1,800, pods Veev One y cápsulas Inprime. Stock real y entrega el mismo día.",
     intro:
-      "Veev es la marca de vapeo de Philip Morris pensada para quienes buscan una experiencia limpia, consistente y premium. La línea Veev Now ofrece desechables de hasta 500 puffs en sabores frutales y mentolados muy buscados en República Dominicana. En Vape 2 Go encuentras la mayor variedad de Veev en Santiago, con stock real y entrega rápida el mismo día. Compra Veev original online y recíbelo directo en tu puerta.",
-    keywords: ["veev rd", "veev now", "veev dominicana", "veev santiago", "veev desechable", "comprar veev rd"],
+      "Veev es la marca de vapeo de Philip Morris pensada para quienes buscan una experiencia limpia, consistente y premium. Su línea de desechables Veev Now llega hasta 8,000 puffs (y el Veev Now Classic de 1,800), en sabores tan buscados en República Dominicana como Blue Mint, Watermelon e Ice Mint; además de los pods recargables Veev One y las cápsulas Veev Inprime. En Vape 2 Go encuentras la mayor variedad de Veev en Santiago —con stock real y entrega el mismo día. Compra Veev original online (Veev Now, Veev One, Inprime y más) y recíbelo directo en tu puerta.",
+    keywords: ["veev rd", "veev now", "veev now 8000 puffs", "veev now classic", "veev one", "veev inprime", "pods veev", "veev dominicana", "veev santiago", "comprar veev rd"],
+    faqs: [
+      { q: "¿Cuántos puffs tiene un Veev Now?", a: "El Veev Now llega hasta 8,000 puffs en su versión de mayor duración, y el Veev Now Classic ofrece 1,800 puffs. En Vape 2 Go cada producto indica sus puffs y sabores disponibles." },
+      { q: "¿Qué diferencia hay entre Veev Now, Veev One y Veev Inprime?", a: "Veev Now es el desechable (viene cargado y listo para usar). Veev One es el sistema pod recargable con cápsulas reemplazables. Veev Inprime son sus cápsulas/pods. Elige desechable por comodidad o pod para ahorrar a largo plazo." },
+      { q: "¿Dónde comprar Veev original en Santiago, RD?", a: "En Vape 2 Go (vapes.do) compras Veev original —Veev Now, Veev One e Inprime— con stock real y entrega el mismo día en Santiago de los Caballeros." },
+      { q: "¿Cuáles son los sabores de Veev más buscados?", a: "Los más pedidos en RD son Blue Mint, Watermelon e Ice Mint, entre otros frutales y mentolados. Revisa el catálogo para ver el stock del momento." },
+    ],
   },
   {
     id: "hqd",
@@ -31,10 +43,18 @@ export const BRANDS: BrandMeta[] = [
   {
     id: "terea",
     name: "Terea",
-    seoTitle: "Terea para IQOS ILUMA en Santiago, RD",
+    seoTitle: "Terea para IQOS ILUMA en Santiago, RD — Todos los Sabores",
+    metaDescription:
+      "Terea original para IQOS ILUMA en Santiago, RD: Sienna, Deep Mint, Glacier, Amber, Bronze y más. Por cajetilla o cartón, con entrega el mismo día.",
     intro:
-      "Terea son los sticks de tabaco diseñados específicamente para los dispositivos IQOS ILUMA, con tecnología SMARTCORE que calienta sin quemar. Disponibles en una amplia gama de selecciones —Amber, Bronze, Sienna, Yellow, Deep Mint y más—, ofrecen un sabor consistente y limpio. En Vape 2 Go encuentras Terea original por cajetilla o cartón en Santiago, RD, con entrega rápida. Compra tus Terea para IQOS ILUMA y recíbelos directo en tu puerta.",
-    keywords: ["terea rd", "terea iluma", "terea dominicana", "terea santiago", "sticks iqos iluma", "comprar terea rd"],
+      "Terea son los sticks de tabaco diseñados específicamente para los dispositivos IQOS ILUMA, con tecnología SMARTCORE que calienta sin quemar. Disponibles en una amplia gama de selecciones —Amber, Bronze, Sienna, Yellow, Turquoise, Deep Mint, Glacier y más—, ofrecen un sabor consistente y limpio. En Vape 2 Go encuentras Terea original por cajetilla o cartón en Santiago, RD, con entrega el mismo día. Compra tus Terea para IQOS ILUMA y recíbelos directo en tu puerta.",
+    keywords: ["terea rd", "terea iluma", "terea deep mint", "terea glacier", "terea sienna", "sabores terea", "terea dominicana", "terea santiago", "comprar terea rd"],
+    faqs: [
+      { q: "¿Qué sabores de Terea hay disponibles?", a: "En Vape 2 Go encuentras las selecciones más buscadas: Sienna (tabaco tostado con notas cálidas), Deep Mint (mentol intenso), Glacier (mentol fresco), Amber, Bronze, Yellow y Turquoise, entre otras. El stock exacto se ve en el catálogo." },
+      { q: "¿Qué sabor es el Terea Sienna?", a: "Terea Sienna es una mezcla de tabaco tostado con notas cálidas y ligeramente especiadas —una de las más vendidas en RD. Es, además, el sabor detrás del personaje 'Sienna' de nuestra saga El Sereno." },
+      { q: "¿Qué diferencia hay entre Terea y Heets?", a: "Terea es para los dispositivos IQOS ILUMA (calientan sin lámina, tecnología SMARTCORE). Heets es para los IQOS clásicos (3, 3 Duo, Lil Solid). Cada stick funciona solo con su tipo de dispositivo." },
+      { q: "¿Dónde comprar Terea original en Santiago, RD?", a: "En Vape 2 Go (vapes.do) compras Terea original por cajetilla o cartón, con entrega el mismo día en Santiago de los Caballeros." },
+    ],
   },
   {
     id: "geek-bar",

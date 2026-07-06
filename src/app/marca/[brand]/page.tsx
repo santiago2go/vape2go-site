@@ -18,7 +18,10 @@ export async function generateMetadata({
   if (!meta) return {};
 
   const ogTitle = `${meta.seoTitle} | Vape 2 Go`;
-  const description = `Compra ${meta.name} original en Vape 2 Go, Santiago, RD. Entrega rápida el mismo día. ${meta.intro.slice(0, 90)}`;
+  const available = getProductsByBrand(meta.name).filter((p) => p.disponible).length;
+  const description =
+    meta.metaDescription ??
+    `${meta.name} original en Santiago, RD. ${available}+ productos en stock con entrega el mismo día. Compra ${meta.name} online en Vape 2 Go y recíbelo en tu puerta.`;
   const canonical = `${SITE_URL}/marca/${meta.id}/`;
 
   return {
@@ -99,6 +102,19 @@ export default async function BrandPage({
     },
   };
 
+  const faqSchema =
+    meta.faqs && meta.faqs.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: meta.faqs.map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a },
+          })),
+        }
+      : null;
+
   const otherBrands = BRANDS.filter((b) => b.id !== meta.id).slice(0, 12);
 
   return (
@@ -115,6 +131,12 @@ export default async function BrandPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
       />
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
 
       <div className="max-w-6xl mx-auto px-4 py-10 space-y-8">
         {/* Breadcrumb */}
@@ -161,6 +183,23 @@ export default async function BrandPage({
           <p className="text-gray-400 py-12 text-center text-sm">
             No hay productos de esta marca todavía.
           </p>
+        )}
+
+        {/* FAQ (AEO + rich results) */}
+        {meta.faqs && meta.faqs.length > 0 && (
+          <section className="pt-8 border-t border-gray-100 max-w-3xl">
+            <h2 className="text-2xl font-normal text-gray-900 mb-6">
+              Preguntas frecuentes sobre {meta.name}
+            </h2>
+            <div className="space-y-5">
+              {meta.faqs.map((f) => (
+                <div key={f.q}>
+                  <h3 className="text-base font-semibold text-gray-900 mb-1.5">{f.q}</h3>
+                  <p className="text-sm text-gray-500 leading-relaxed">{f.a}</p>
+                </div>
+              ))}
+            </div>
+          </section>
         )}
       </div>
     </>

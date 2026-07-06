@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getAllSlugs, CATEGORIES } from "@/data/products";
 import { BRANDS } from "@/data/brands";
+import { GUIAS } from "@/data/guias";
 
 export const dynamic = "force-static";
 
@@ -28,11 +29,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
+  const guiaUrls: MetadataRoute.Sitemap = GUIAS.map((g) => ({
+    url: `${BASE}/guias/${g.id}/`,
+    lastModified: new Date(),
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
+
   return [
     { url: `${BASE}/`, lastModified: new Date(), changeFrequency: "daily", priority: 1.0 },
     { url: `${BASE}/catalogo/`, lastModified: new Date(), changeFrequency: "daily", priority: 0.9 },
+    { url: `${BASE}/guias/`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.7 },
     ...categoryUrls,
     ...brandUrls,
+    ...guiaUrls,
     ...productUrls,
   ];
 }

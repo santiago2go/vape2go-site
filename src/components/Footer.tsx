@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Logo from "./Logo";
 import CategoryThumb from "./CategoryThumb";
-import { CATEGORIES, INSTAGRAM_URL, PEDIDOSYA_URL } from "@/data/catalog-meta";
+import { CATEGORIES, INSTAGRAM_URL, TIKTOK_URL, PEDIDOSYA_URL } from "@/data/catalog-meta";
 
 export default function Footer() {
   return (
@@ -23,6 +23,9 @@ export default function Footer() {
           <div className="flex gap-4">
             <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-gray-500 hover:text-gray-700 transition-colors">
               Instagram
+            </a>
+            <a href={TIKTOK_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-gray-500 hover:text-gray-700 transition-colors">
+              TikTok
             </a>
           </div>
         </div>
@@ -49,6 +52,11 @@ export default function Footer() {
             <li>
               <Link href="/catalogo/" className="text-sm text-gray-500 hover:text-violet-600 transition-colors">
                 Catálogo completo
+              </Link>
+            </li>
+            <li>
+              <Link href="/guias/" className="text-sm text-gray-500 hover:text-violet-600 transition-colors">
+                Guías de vapeo
               </Link>
             </li>
             <li>
