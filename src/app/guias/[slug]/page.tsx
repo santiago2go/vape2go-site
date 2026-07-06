@@ -33,8 +33,9 @@ export async function generateMetadata({
       title: ogTitle,
       description: guia.metaDescription,
       url: canonical,
+      images: [{ url: "/og-cover.png", width: 1200, height: 630 }],
     },
-    twitter: { card: "summary", title: ogTitle, description: guia.metaDescription },
+    twitter: { card: "summary_large_image", title: ogTitle, description: guia.metaDescription, images: ["/og-cover.png"] },
   };
 }
 
@@ -74,6 +75,7 @@ export default async function GuiaPage({
     "@context": "https://schema.org",
     "@type": "Article",
     headline: guia.title,
+    image: `${SITE_URL}/og-cover.png`,
     description: guia.metaDescription,
     datePublished: guia.updated,
     dateModified: guia.updated,
