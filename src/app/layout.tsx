@@ -40,14 +40,13 @@ export const metadata: Metadata = {
     siteName: "Vape 2 Go",
     title: "Vape 2 Go | Tu vape favorito en República Dominicana",
     description: "Los mejores desechables, pods y liquids. Entrega rápida en Santiago, RD.",
-    // TODO: reemplazar por un OG image propio de 1200×630 px (hoy usa el logo)
-    images: [{ url: "/logo.jpeg", width: 512, height: 512, alt: "Vape 2 Go" }],
+    images: [{ url: "/og-cover.png", width: 1200, height: 630, alt: "Vape 2 Go" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Vape 2 Go | Tu vape favorito en República Dominicana",
     description: "Desechables, pods y liquids con entrega rápida en Santiago, RD.",
-    images: ["/logo.jpeg"],
+    images: ["/og-cover.png"],
   },
   robots: { index: true, follow: true },
   // Evita el 404 de /favicon.ico que el navegador pide por defecto (Lighthouse Best Practices)
@@ -60,6 +59,7 @@ const localBusinessSchema = {
   name: "Vape 2 Go",
   description: "Tienda de vapes y e-cigarettes en Santiago, República Dominicana",
   url: "https://vapes.do",
+  image: "https://vapes.do/og-cover.png",
   // TODO: agregar el WhatsApp/teléfono público real cuando esté listo (se removió el placeholder falso).
   priceRange: "$$",
   currenciesAccepted: "DOP",
