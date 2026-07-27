@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Serif_Display, DM_Sans } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import AgeGate from "@/components/AgeGate";
 import Providers from "@/components/Providers";
 
 const dmSerifDisplay = DM_Serif_Display({
@@ -50,7 +47,8 @@ export const metadata: Metadata = {
   },
   robots: { index: true, follow: true },
   // Evita el 404 de /favicon.ico que el navegador pide por defecto (Lighthouse Best Practices)
-  icons: { icon: "/logo.jpeg", shortcut: "/logo.jpeg", apple: "/logo.jpeg" },
+  // El favicon/apple-icon los provee Next.js por convención desde src/app/icon.png y apple-icon.png
+  // (PNG que sí renderiza en las pestañas; el JPEG anterior no salía).
 };
 
 const localBusinessSchema = {
@@ -60,7 +58,7 @@ const localBusinessSchema = {
   description: "Tienda de vapes y e-cigarettes en Santiago, República Dominicana",
   url: "https://vapes.do",
   image: "https://vapes.do/og-cover.png",
-  // TODO: agregar el WhatsApp/teléfono público real cuando esté listo (se removió el placeholder falso).
+  telephone: "+18297224238",
   priceRange: "$$",
   currenciesAccepted: "DOP",
   address: {
@@ -89,9 +87,15 @@ const localBusinessSchema = {
   openingHoursSpecification: [
     {
       "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
-      opens: "09:00",
+      dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+      opens: "08:00",
       closes: "22:00",
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Saturday","Sunday"],
+      opens: "10:00",
+      closes: "20:00",
     },
   ],
 };
@@ -105,16 +109,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="dns-prefetch" href="https://pedidosya.dhmedia.io" />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema).replace(/</g, "\\u003c") }}
         />
       </head>
       <body>
-        <Providers>
-          <AgeGate />
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
