@@ -38,11 +38,13 @@ export default function EnvioGratisBar() {
     return () => { vivo = false; };
   }, []);
 
+  // Sin zonas en cero no se pinta NADA — ni un borde. El contenedor fijo del layout
+  // queda entonces con el navbar solo, que es como estaba antes de que existiera.
   if (n === 0) return null;
 
   return (
     <div className="w-full bg-green-600 text-white">
-      <p className="mx-auto flex max-w-6xl items-center justify-center gap-2 px-4 py-2 text-center text-[13px] font-medium leading-snug sm:text-sm">
+      <p className="mx-auto flex max-w-6xl items-center justify-center gap-2 px-4 py-1.5 text-center text-[12.5px] sm:py-2 font-medium leading-snug sm:text-sm">
         <span aria-hidden="true">🛵</span>
         <span>
           <strong className="font-bold uppercase tracking-wide">Envío gratis</strong>
