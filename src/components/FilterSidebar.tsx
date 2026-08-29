@@ -3,7 +3,7 @@
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 import { CATEGORIES, type Category } from "@/data/catalog-meta";
-import { BRANDS } from "@/data/brands";
+import { AVAILABLE_BRANDS as BRANDS } from "@/data/brands";
 import CategoryThumb from "./CategoryThumb";
 
 export interface Filters {
@@ -141,20 +141,6 @@ export default function FilterSidebar({
         </ul>
       </Section>
 
-      {/* Disponibilidad */}
-      <Section title="Disponibilidad">
-        <label className="flex items-center gap-2 cursor-pointer group">
-          <input
-            type="checkbox"
-            checked={filters.soloDisponibles}
-            onChange={() => set({ soloDisponibles: !filters.soloDisponibles })}
-            className="accent-violet-600 rounded"
-          />
-          <span className={`text-sm transition-colors ${filters.soloDisponibles ? "text-violet-700 font-medium" : "text-gray-600 group-hover:text-gray-900"}`}>
-            Solo disponibles
-          </span>
-        </label>
-      </Section>
     </aside>
   );
 }

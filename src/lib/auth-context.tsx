@@ -16,7 +16,7 @@ export interface Profile {
   email: string | null;
   full_name: string | null;
   phone: string | null;
-  role: "customer" | "staff" | "admin";
+  role: "customer" | "staff" | "admin" | "operator" | "supervisor";
   age_verified: boolean;
   marketing_consent: boolean;
   loyalty_points: number;
@@ -29,6 +29,9 @@ interface AuthState {
   user: User | null;
   profile: Profile | null;
   isAdmin: boolean;
+  isOperator: boolean;
+  isSupervisor: boolean;
+  isBackoffice: boolean;
   signInWithPassword: (email: string, password: string, captchaToken?: string) => Promise<{ error: string | null }>;
   signUp: (args: SignUpArgs) => Promise<{ error: string | null; needsConfirmation: boolean }>;
   signInWithMagicLink: (email: string, captchaToken?: string) => Promise<{ error: string | null }>;
@@ -187,7 +190,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     session,
     user: session?.user ?? null,
     profile,
+    // isAdmin queda EXACTO admin|staff: NO incluir operator/supervisor aquí (la RLS
+    // is_admin() también es admin|staff; el operador debe quedar fuera del acceso pleno).
     isAdmin: profile?.role === "admin" || profile?.role === "staff",
+    isOperator: profile?.role === "operator" || profile?.role === "supervisor",
+    isSupervisor: profile?.role === "supervisor",
+    isBackoffice:
+      profile?.role === "admin" ||
+      profile?.role === "staff" ||
+      profile?.role === "operator" ||
+      profile?.role === "supervisor",
     signInWithPassword,
     signUp,
     signInWithMagicLink,

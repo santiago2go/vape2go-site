@@ -29,3 +29,33 @@
   for = "/_next/static/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+# ----------------------------------------------------------------------------
+# 301 de MARCAS DESCONTINUADAS → su reemplazo (preserva la autoridad SEO y evita 404).
+# Heets ya no existe (ahora es Terea); IQOS ILUMA consume Terea. Nivel marca por ahora;
+# el sabor-a-sabor (Heets Sienna → Terea Sienna) se agrega después si se quiere. Las
+# FICHAS de producto Heets siguen vivas (200) → su SEO se conserva. Cubre con y sin "/".
+# ----------------------------------------------------------------------------
+[[redirects]]
+  from = "/marca/heets"
+  to = "/marca/terea/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/marca/heets/"
+  to = "/marca/terea/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/marca/iqos"
+  to = "/marca/terea/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/marca/iqos/"
+  to = "/marca/terea/"
+  status = 301
+  force = true

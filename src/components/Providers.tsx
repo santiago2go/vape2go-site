@@ -3,6 +3,8 @@
 import { useEffect, useRef, Suspense } from "react";
 import { usePathname } from "next/navigation";
 import { AuthProvider, useAuth } from "@/lib/auth-context";
+import { LiveStockProvider } from "@/lib/live-stock-context";
+import { CartProvider } from "@/lib/cart-context";
 import { track } from "@/lib/analytics";
 import { initMonitoring } from "@/lib/monitoring";
 
@@ -84,11 +86,8 @@ function PostHogIdentify() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (user && identified.current !== user.id) {
-      ph()?.identify(user.id, {
-        email: user.email,
-        role: profile?.role,
-        name: profile?.full_name || undefined,
-      });
+      // PII minimizada (Ley 172-13): a PostHog solo id + rol, sin email ni nombre.
+      ph()?.identify(user.id, { role: profile?.role });
       identified.current = user.id;
     } else if (!user && identified.current) {
       ph()?.reset();
@@ -109,7 +108,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         <PageViews />
       </Suspense>
       <PostHogIdentify />
-      {children}
+      <LiveStockProvider>
+        <CartProvider>{children}</CartProvider>
+      </LiveStockProvider>
     </AuthProvider>
   );
 }

@@ -22,7 +22,7 @@ export default function SearchModal({
 
   useEffect(() => {
     if (open && !catalog) {
-      import("@/data/products.json").then((m) => setCatalog(m.default as Product[]));
+      import("@/data/products-lite.json").then((m) => setCatalog(m.default as Product[]));
     }
   }, [open, catalog]);
 

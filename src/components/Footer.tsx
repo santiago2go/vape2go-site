@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Logo from "./Logo";
 import CategoryThumb from "./CategoryThumb";
-import { CATEGORIES, INSTAGRAM_URL, TIKTOK_URL, PEDIDOSYA_URL, DIRECT_ORDERS } from "@/data/catalog-meta";
+import { CATEGORIES, INSTAGRAM_URL, TIKTOK_URL, PEDIDOSYA_URL, WHATSAPP_ORDER_URL, DIRECT_ORDERS } from "@/data/catalog-meta";
 
 export default function Footer() {
   return (
@@ -101,6 +101,32 @@ export default function Footer() {
               Abrir PedidosYa
             </a>
           )}
+
+          {/* Otras formas de pedir — visibles en todas las páginas */}
+          <ul className="mt-5 space-y-2 text-sm">
+            <li>
+              <a
+                href={WHATSAPP_ORDER_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-500 hover:text-[#128C7E] transition-colors"
+              >
+                Pedir por WhatsApp
+              </a>
+            </li>
+            {DIRECT_ORDERS && (
+              <li>
+                <a
+                  href={PEDIDOSYA_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-500 hover:text-violet-600 transition-colors"
+                >
+                  Pagar con tarjeta → PedidosYa
+                </a>
+              </li>
+            )}
+          </ul>
         </div>
       </div>
 

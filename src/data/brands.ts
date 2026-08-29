@@ -178,3 +178,13 @@ export function getProductsByBrand(name: string): Product[] {
     (a, b) => Number(b.disponible) - Number(a.disponible) || a.name.localeCompare(b.name)
   );
 }
+
+/**
+ * Marcas con AL MENOS 1 producto disponible (Activo=S en vivo). Se usa para generar las
+ * páginas /marca/, el sitemap y el filtro de marcas — evita páginas de marca VACÍAS
+ * (p.ej. Heets/IQOS, ya descontinuados). El flag `disponible` se sincroniza con
+ * product_stock en el prebuild (scripts/sync-availability.mjs).
+ */
+export const AVAILABLE_BRANDS: BrandMeta[] = BRANDS.filter((b) =>
+  getProductsByBrand(b.name).some((p) => p.disponible)
+);

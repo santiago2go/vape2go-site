@@ -1,0 +1,194 @@
+"use client";
+
+// Ringtone del mostrador: suena en loop cuando entra una orden nueva (WEB) y para cuando
+// alguien toca "En revisión". Canal SEGURO para el rol cost-blind: se alimenta de
+// `order_alerts` (RLS: solo sin-acusar/acusada<2min y recientes) por Supabase Realtime.
+// Sonido con Web Audio (sin archivo). Montado global en el layout del backoffice.
+
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Bell, Volume2 } from "lucide-react";
+import { getSupabase } from "@/lib/supabase";
+import { useAuth } from "@/lib/auth-context";
+import { formatDOP } from "@/data/catalog-meta";
+
+const BRAND = process.env.NEXT_PUBLIC_BRAND || "VAPE";
+
+type Alert = { order_id: string; customer_name: string | null; total: number | null; created_at: string };
+
+const byTime = (a: Alert, b: Alert) => a.created_at.localeCompare(b.created_at);
+
+export default function OrderAlert() {
+  const { session, isBackoffice } = useAuth();
+  const [alerts, setAlerts] = useState<Alert[]>([]);
+  const [audioReady, setAudioReady] = useState(false);
+  const audio = useRef<{ ctx: AudioContext | null; timer: number | null }>({ ctx: null, timer: null });
+
+  // --- Web Audio: patrón "ring-ring" (dos tonos), en loop mientras haya alertas. ---
+  const ensureCtx = useCallback(() => {
+    const a = audio.current;
+    if (!a.ctx) {
+      const AC = window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+      if (AC) a.ctx = new AC();
+    }
+    if (a.ctx && a.ctx.state === "suspended") a.ctx.resume().then(() => setAudioReady(true)).catch(() => {});
+    if (a.ctx && a.ctx.state === "running") setAudioReady(true);
+    return a.ctx;
+  }, []);
+
+  const ring = useCallback(() => {
+    const ctx = ensureCtx();
+    if (!ctx || ctx.state !== "running") return;
+    const now = ctx.currentTime;
+    const tone = (at: number, freq: number, dur: number) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.0001, at);
+      gain.gain.exponentialRampToValueAtTime(0.3, at + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(at);
+      osc.stop(at + dur + 0.03);
+    };
+    tone(now, 880, 0.18);
+    tone(now + 0.24, 1047, 0.2);
+  }, [ensureCtx]);
+
+  // Loop del tono según haya alertas.
+  useEffect(() => {
+    const a = audio.current;
+    if (alerts.length > 0 && a.timer == null) {
+      ring();
+      a.timer = window.setInterval(ring, 1600);
+    } else if (alerts.length === 0 && a.timer != null) {
+      clearInterval(a.timer);
+      a.timer = null;
+    }
+  }, [alerts.length, ring]);
+
+  // Desbloquear el audio con el primer gesto (política de autoplay): touch, click o tecla.
+  useEffect(() => {
+    const unlock = () => ensureCtx();
+    const evs: (keyof WindowEventMap)[] = ["pointerdown", "keydown", "touchstart"];
+    evs.forEach((e) => window.addEventListener(e, unlock));
+    return () => evs.forEach((e) => window.removeEventListener(e, unlock));
+  }, [ensureCtx]);
+
+  // Carga inicial (por si la PC se reinició con órdenes sin acusar) + Realtime.
+  useEffect(() => {
+    if (!session || !isBackoffice) return;
+    const sb = getSupabase();
+    if (!sb) return;
+    let active = true;
+
+    (async () => {
+      const { data } = await sb
+        .from("order_alerts")
+        .select("order_id,customer_name,total,created_at")
+        .eq("brand", BRAND)
+        .is("acknowledged_at", null)
+        .order("created_at", { ascending: true });
+      if (!active || !data) return;
+      // MERGE (no replace): si un INSERT de Realtime ya llegó antes de resolver este fetch,
+      // no lo pisamos. Dedupe por order_id.
+      setAlerts((prev) => {
+        const seen = new Set(prev.map((p) => p.order_id));
+        const merged = [...prev];
+        for (const d of data as Alert[]) if (!seen.has(d.order_id)) merged.push(d);
+        return merged.sort(byTime);
+      });
+    })();
+
+    const ch = sb
+      .channel("order-alerts")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "order_alerts", filter: `brand=eq.${BRAND}` },
+        (payload) => {
+          const r = payload.new as Alert & { acknowledged_at: string | null };
+          if (r.acknowledged_at) return;
+          setAlerts((prev) => (prev.some((p) => p.order_id === r.order_id) ? prev : [...prev, r].sort(byTime)));
+        }
+      )
+      .on(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "order_alerts", filter: `brand=eq.${BRAND}` },
+        (payload) => {
+          const r = payload.new as { order_id: string; acknowledged_at: string | null };
+          if (r.acknowledged_at) setAlerts((prev) => prev.filter((p) => p.order_id !== r.order_id));
+        }
+      )
+      .subscribe();
+
+    return () => {
+      active = false;
+      sb.removeChannel(ch);
+    };
+  }, [session, isBackoffice]);
+
+  // Limpieza del audio al desmontar.
+  useEffect(() => {
+    return () => {
+      const a = audio.current;
+      if (a.timer != null) clearInterval(a.timer);
+      if (a.ctx) a.ctx.close().catch(() => {});
+    };
+  }, []);
+
+  const ack = useCallback(async (a: Alert) => {
+    setAlerts((prev) => prev.filter((p) => p.order_id !== a.order_id)); // optimista → corta el tono
+    const sb = getSupabase();
+    if (!sb) return;
+    const { error } = await sb.rpc("ack_order_alert", { p_order: a.order_id });
+    if (error) {
+      // Revertir para no perder la alerta en silencio (vuelve a sonar).
+      setAlerts((prev) => (prev.some((p) => p.order_id === a.order_id) ? prev : [...prev, a].sort(byTime)));
+    }
+  }, []);
+
+  if (!isBackoffice) return null;
+
+  const current = alerts[0];
+  return (
+    <>
+      {/* Píldora para "armar" el sonido si el navegador aún lo tiene bloqueado (kiosco sin tocar). */}
+      {!audioReady && (
+        <button
+          onClick={() => ensureCtx()}
+          className="fixed bottom-4 right-4 z-[55] inline-flex items-center gap-2 rounded-full bg-slate-800 px-4 py-2.5 text-xs font-semibold text-white shadow-lg hover:bg-slate-900"
+        >
+          <Volume2 size={15} /> Activar sonido de órdenes
+        </button>
+      )}
+
+      {/* Banner de la alerta activa. */}
+      {current && (
+        <div className="fixed inset-x-0 top-0 z-[60] flex justify-center px-3 pt-3 pointer-events-none">
+          <div className="pointer-events-auto w-full max-w-md rounded-2xl border border-violet-300 bg-white shadow-2xl shadow-violet-900/20 ring-1 ring-violet-200">
+            <div className="flex items-center gap-3 p-4">
+              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-violet-100 text-violet-600 animate-pulse">
+                <Bell size={22} />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-semibold text-slate-800">
+                  🔔 Nueva orden{alerts.length > 1 ? ` · ${alerts.length} en cola` : ""}
+                </p>
+                <p className="truncate text-xs text-slate-500">
+                  {current.customer_name || "Cliente"}
+                  {current.total != null ? ` · ${formatDOP(current.total)}` : ""}
+                </p>
+              </div>
+              <button
+                onClick={() => ack(current)}
+                className="shrink-0 rounded-lg bg-violet-600 px-3.5 py-2 text-xs font-semibold text-white hover:bg-violet-700 active:scale-95"
+              >
+                En revisión
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}

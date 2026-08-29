@@ -4,7 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import VapePlaceholder from "./VapePlaceholder";
-import { type Product, type Category, PEDIDOSYA_URL, cdnImage } from "@/data/catalog-meta";
+import PriceTag from "./PriceTag";
+import AddToCartButton from "./AddToCartButton";
+import { type Product, type Category, cdnImage, PEDIDOSYA_URL, DIRECT_ORDERS } from "@/data/catalog-meta";
 
 const CATEGORY_STYLES: Record<Category, { label: string; bg: string; text: string }> = {
   desechables: { label: "Desechable", bg: "bg-violet-100", text: "text-violet-700" },
@@ -68,27 +70,38 @@ export default function ProductCard({ product }: { product: Product }) {
         {/* Brand */}
         <p className="text-xs text-gray-500">{product.brand}</p>
 
-        {/* Price */}
-        {product.price > 0 && (
-          <p className="text-violet-700 font-bold text-base mt-auto">
-            {product.priceFormatted}
-          </p>
-        )}
+        {DIRECT_ORDERS ? (
+          /* Órdenes directas ON: precio + disponibilidad EN VIVO (product_stock) + carrito */
+          <div className="mt-auto flex flex-col gap-2 pt-1">
+            <PriceTag sku={product.sku} fallback={product.price > 0 ? product.priceFormatted : undefined} />
+            <AddToCartButton product={product} />
+          </div>
+        ) : (
+          /* Órdenes directas OFF: render original de producción (PedidosYa) */
+          <>
+            {/* Price */}
+            {product.price > 0 && (
+              <p className="text-violet-700 font-bold text-base mt-auto">
+                {product.priceFormatted}
+              </p>
+            )}
 
-        {/* CTA */}
-        <a
-          href={PEDIDOSYA_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={`mt-auto text-center text-xs font-semibold py-2 rounded-lg transition-colors ${
-            product.disponible
-              ? "bg-violet-600 text-white hover:bg-violet-700"
-              : "bg-gray-100 text-gray-400 cursor-not-allowed"
-          }`}
-          onClick={product.disponible ? undefined : (e) => e.preventDefault()}
-        >
-          {product.disponible ? "Pedir ahora" : "No disponible"}
-        </a>
+            {/* CTA */}
+            <a
+              href={PEDIDOSYA_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`mt-auto text-center text-xs font-semibold py-2 rounded-lg transition-colors ${
+                product.disponible
+                  ? "bg-violet-600 text-white hover:bg-violet-700"
+                  : "bg-gray-100 text-gray-400 cursor-not-allowed"
+              }`}
+              onClick={product.disponible ? undefined : (e) => e.preventDefault()}
+            >
+              {product.disponible ? "Pedir ahora" : "No disponible"}
+            </a>
+          </>
+        )}
       </div>
     </div>
   );
