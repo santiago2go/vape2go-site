@@ -18,6 +18,13 @@ const ALLOWED_ROLES = new Set(["operator", "supervisor", "staff", "admin"]);
 // tarjeta -> 'azul' (valor ya aceptado por el check vivo; evita ALTER del constraint).
 const PAY_MAP = { cash: "cash", transfer: "transfer", card: "azul" };
 
+// n8n cierra los webhooks de órdenes con candado de cabecera (cacare `scripts/n8n/candado-ordenes.mjs`):
+// sin `X-N8N-Ordenes` el webhook contesta 403 y el aviso a n8n falla callado (es best-effort).
+const HOOK_HEADERS = {
+  "content-type": "application/json",
+  ...(process.env.N8N_ORDERS_HOOK_SECRET ? { "X-N8N-Ordenes": process.env.N8N_ORDERS_HOOK_SECRET } : {}),
+};
+
 export default async function handler(req) {
   if (req.method !== "POST") return json({ error: "method" }, 405);
 
@@ -88,12 +95,12 @@ export default async function handler(req) {
   const statusHook = process.env.ORDER_STATUS_WEBHOOK_URL; // WF32 → Ventas-Raw (delivered)
   await Promise.allSettled([
     bridge
-      ? fetch(bridge, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ order_id: data.id, channel }) })
+      ? fetch(bridge, { method: "POST", headers: HOOK_HEADERS, body: JSON.stringify({ order_id: data.id, channel }) })
       : Promise.resolve(),
     // La acción "delivered" (WF32 → Ventas-Raw) es SOLO para mostrador. WhatsApp nace
     // pendiente: se marca entregado luego desde Órdenes → ahí WF32 escribe Ventas-Raw.
     !isWa && statusHook
-      ? fetch(statusHook, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ order_id: data.id, action: "delivered", channel }) })
+      ? fetch(statusHook, { method: "POST", headers: HOOK_HEADERS, body: JSON.stringify({ order_id: data.id, action: "delivered", channel }) })
       : Promise.resolve(),
   ]);
 

@@ -12,6 +12,13 @@ import { admin, json } from "./_lib.mjs";
 const ACTIONS = new Set(["delivered", "cancelled"]);
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
+// n8n cierra los webhooks de órdenes con candado de cabecera (cacare `scripts/n8n/candado-ordenes.mjs`):
+// sin `X-N8N-Ordenes` el webhook contesta 403 y el aviso a n8n falla callado (es best-effort).
+const HOOK_HEADERS = {
+  "content-type": "application/json",
+  ...(process.env.N8N_ORDERS_HOOK_SECRET ? { "X-N8N-Ordenes": process.env.N8N_ORDERS_HOOK_SECRET } : {}),
+};
+
 export default async function handler(req) {
   if (req.method !== "POST") return json({ error: "method" }, 405);
 
@@ -49,7 +56,7 @@ export default async function handler(req) {
   if (hook) {
     await fetch(hook, {
       method: "POST",
-      headers: { "content-type": "application/json" },
+      headers: HOOK_HEADERS,
       body: JSON.stringify({ order_id: orderId, action }),
     });
   }

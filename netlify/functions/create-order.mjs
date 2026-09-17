@@ -6,6 +6,13 @@
 
 import { admin, verifyTurnstile, json, recomputeCart } from "./_lib.mjs";
 
+// n8n cierra los webhooks de órdenes con candado de cabecera (cacare `scripts/n8n/candado-ordenes.mjs`):
+// sin `X-N8N-Ordenes` el webhook contesta 403 y el aviso a n8n falla callado (es best-effort).
+const HOOK_HEADERS = {
+  "content-type": "application/json",
+  ...(process.env.N8N_ORDERS_HOOK_SECRET ? { "X-N8N-Ordenes": process.env.N8N_ORDERS_HOOK_SECRET } : {}),
+};
+
 export default async function handler(req) {
   if (req.method !== "POST") return json({ error: "method" }, 405);
 
@@ -99,7 +106,7 @@ export default async function handler(req) {
     try {
       await fetch(hook, {
         method: "POST",
-        headers: { "content-type": "application/json" },
+        headers: HOOK_HEADERS,
         body: JSON.stringify({ order_id: data.id }),
       });
     } catch { /* no romper la orden si el bridge falla; se reprocesa desde backoffice */ }
