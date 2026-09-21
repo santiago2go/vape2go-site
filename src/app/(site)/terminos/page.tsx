@@ -59,13 +59,22 @@ export default function TerminosPage() {
         copiarlos ni usarlos sin autorización.
       </p>
 
-      <H2>6. Limitación de responsabilidad</H2>
+      <H2>6. Imágenes de producto de terceros — aviso y retirada</H2>
+      <p>
+        Algunas imágenes de producto que se muestran en el sitio provienen de los fabricantes o distribuidores de esas
+        marcas y se usan con fines meramente descriptivos e ilustrativos del catálogo, sin ánimo de infringir derecho de
+        autor o de marca alguno. Si eres titular de derechos sobre alguna imagen publicada y deseas que la retiremos o
+        sustituyamos, escríbenos a <strong>legal@vapes.do</strong> indicando el producto y el enlace de la página; la
+        retiraremos o reemplazaremos en un plazo razonable.
+      </p>
+
+      <H2>7. Limitación de responsabilidad</H2>
       <p>
         El sitio se ofrece &quot;tal cual&quot;. En la máxima medida permitida por la ley, Vape 2 Go no será responsable
         por daños indirectos o incidentales derivados del uso del sitio o de los productos.
       </p>
 
-      <H2>7. Resolución de conflictos, reclamos y jurisdicción aplicable</H2>
+      <H2>8. Resolución de conflictos, reclamos y jurisdicción aplicable</H2>
       <ul className="list-disc pl-5 space-y-1.5">
         <li>
           <strong>Proceso de reclamo previo.</strong> Ante cualquier disconformidad con un producto o servicio, te
@@ -89,13 +98,13 @@ export default function TerminosPage() {
         </li>
       </ul>
 
-      <H2>8. Ley aplicable</H2>
+      <H2>9. Ley aplicable</H2>
       <p>Estos Términos se rigen por las leyes de la República Dominicana.</p>
 
-      <H2>9. Cambios</H2>
+      <H2>10. Cambios</H2>
       <p>Podemos actualizar estos Términos; el uso continuado del sitio implica aceptación de la versión vigente.</p>
 
-      <H2>10. Contacto</H2>
+      <H2>11. Contacto</H2>
       <p>Dudas sobre estos Términos: <strong>legal@vapes.do</strong>.</p>
 
       <p className="text-xs text-gray-400 border-t border-gray-100 pt-6">

@@ -89,6 +89,7 @@ export default function CheckoutPage() {
     cashAmount: "",
   });
   const [terms, setTerms] = useState(false);
+  const [ageConfirmed, setAgeConfirmed] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<"cash" | "transfer">("cash");
   const [delivery, setDelivery] = useState<DeliveryConfig | null>(null);
   const [zones, setZones] = useState<Zone[]>([]);
@@ -281,6 +282,7 @@ export default function CheckoutPage() {
     if (!form.phone.trim()) { setError("Necesitamos tu celular para coordinar la entrega."); return; }
     if (!form.addressLine1.trim()) { setError("Agrega tu dirección de entrega."); return; }
     if (zones.length > 0 && !form.zone) { setError("Selecciona tu sector de entrega."); return; }
+    if (!ageConfirmed) { setError("Confirma que tienes 18 años o más para completar el pedido."); return; }
     if (paymentMethod === "cash") {
       const amt = Number(form.cashAmount);
       if (!form.cashAmount.trim() || !Number.isFinite(amt) || amt < total) {
@@ -655,6 +657,20 @@ export default function CheckoutPage() {
                 (PedidosYa) y el canal asistido (WhatsApp) antes de que abandone. */}
             <OrderChannels variant="inline" />
 
+            <label className="flex items-start gap-2.5 text-xs text-gray-600 leading-relaxed rounded-xl border border-gray-200 bg-gray-50 p-3">
+              <input
+                type="checkbox"
+                checked={ageConfirmed}
+                onChange={(e) => setAgeConfirmed(e.target.checked)}
+                className="mt-0.5 accent-violet-600"
+                required
+              />
+              <span>
+                Confirmo que soy <strong>mayor de 18 años</strong>. Vape 2 Go vende productos con nicotina; en la
+                entrega se verifica la edad con cédula o pasaporte físico.
+              </span>
+            </label>
+
             <Turnstile onToken={handleToken} resetKey={captchaReset} />
             {availability.ready && !availability.accepting && (
               <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs text-amber-800">
@@ -665,7 +681,7 @@ export default function CheckoutPage() {
 
             <button
               type="submit"
-              disabled={busy || (availability.ready && !availability.accepting)}
+              disabled={busy || !ageConfirmed || (availability.ready && !availability.accepting)}
               className="w-full bg-violet-600 text-white font-semibold text-sm py-3.5 rounded-xl hover:bg-violet-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {busy ? "Procesando…" : availability.ready && !availability.accepting ? "Pedidos no disponibles" : "Confirmar orden"}

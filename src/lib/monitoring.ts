@@ -26,8 +26,10 @@ export function initMonitoring(): void {
       dsn,
       environment: process.env.NEXT_PUBLIC_ENV ?? "production",
       tracesSampleRate: 0.1,
-      replaysSessionSampleRate: 0,
-      replaysOnErrorSampleRate: 0.2,
+      // Sin Session Replay: no se registra `Sentry.replayIntegration()`, así que
+      // no hay grabación de pantalla ni de inputs (auditoría legal 21-sep-2026).
+      // Si algún día se necesita para depurar errores, agregar la integración
+      // explícita con `maskAllText: true` y `blockAllMedia: true` (default seguro).
       sendDefaultPii: false,
 
       // Filtra ruido de terceros que NO es un bug de vapes.do (no debe paginar).
