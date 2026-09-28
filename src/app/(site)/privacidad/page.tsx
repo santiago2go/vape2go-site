@@ -99,7 +99,7 @@ export default function PrivacidadPage() {
       <p>
         Puedes acceder, rectificar, actualizar o eliminar tus datos, y oponerte a su uso para marketing (derechos ARCO).
         Escríbenos a <strong>privacidad@vapes.do</strong> y atenderemos tu solicitud conforme a la Ley 172-13 en un plazo
-        no mayor a <strong>quince (15) días laborables</strong>. Puedes eliminar tu cuenta desde la sección Mi Cuenta o
+        no mayor a <strong>diez (10) días hábiles</strong>. Puedes eliminar tu cuenta desde la sección Mi Cuenta o
         solicitándolo por ese correo.
       </p>
 

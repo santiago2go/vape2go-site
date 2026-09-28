@@ -89,6 +89,9 @@ export default function CheckoutPage() {
     cashAmount: "",
   });
   const [terms, setTerms] = useState(false);
+  // Permiso de marketing: SIEMPRE arranca en false. Una compra no es consentimiento
+  // (Ley 172-13 art. 5.4 y política de WhatsApp Business): solo vale lo que la persona marca.
+  const [marketing, setMarketing] = useState(false);
   const [ageConfirmed, setAgeConfirmed] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<"cash" | "transfer">("cash");
   const [delivery, setDelivery] = useState<DeliveryConfig | null>(null);
@@ -360,8 +363,8 @@ export default function CheckoutPage() {
             addressLine2: form.addressLine2.trim(),
             deliveryNotes: form.deliveryNotes.trim(),
             addressLabel: form.addressLabel,
-            marketingConsent: true,
-            termsAccepted: true,
+            marketingConsent: marketing,
+            termsAccepted: terms,
             captchaToken: signupToken,
           });
           created = !suErr;
@@ -548,6 +551,15 @@ export default function CheckoutPage() {
                   y la{" "}
                   <Link href="/privacidad/" target="_blank" className="text-violet-600 underline hover:text-violet-700">Política de Privacidad</Link>.
                 </span>
+              </label>
+              <label className="flex items-start gap-2.5 text-xs text-gray-600 leading-relaxed">
+                <input
+                  type="checkbox"
+                  checked={marketing}
+                  onChange={(e) => setMarketing(e.target.checked)}
+                  className="mt-0.5 accent-violet-600"
+                />
+                <span>Quiero recibir ofertas y novedades por correo/WhatsApp (opcional).</span>
               </label>
               <p className="text-[11px] text-gray-400">
                 ¿Ya tienes cuenta?{" "}

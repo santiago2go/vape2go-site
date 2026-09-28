@@ -76,8 +76,8 @@ cifradas y monitoreo de seguridad.
 ## 6. Tus derechos
 Puedes acceder, rectificar, actualizar o eliminar tus datos, y oponerte a su uso
 para marketing (derechos ARCO). Escríbenos a **privacidad@vapes.do** y atenderemos
-tu solicitud conforme a la Ley 172-13 en un plazo no mayor a **quince (15) días
-laborables**. Puedes eliminar tu cuenta desde la sección Mi Cuenta o solicitándolo
+tu solicitud conforme a la Ley 172-13 en un plazo no mayor a **diez (10) días
+hábiles**. Puedes eliminar tu cuenta desde la sección Mi Cuenta o solicitándolo
 por ese correo.
 
 ## 7. Cookies y almacenamiento local
