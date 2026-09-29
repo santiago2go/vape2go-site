@@ -34,7 +34,7 @@ export default async function handler() {
     if (error) healthy = false;
   } catch (e) {
     healthy = false;
-    checks.error = String(e?.message ?? e);
+    console.error("healthcheck db error", e);
   }
 
   if (!healthy) {

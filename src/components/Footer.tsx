@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Logo from "./Logo";
 import CategoryThumb from "./CategoryThumb";
-import { CATEGORIES, INSTAGRAM_URL, TIKTOK_URL, PEDIDOSYA_URL } from "@/data/catalog-meta";
+import { CATEGORIES, INSTAGRAM_URL, TIKTOK_URL, PEDIDOSYA_URL, WHATSAPP_ORDER_URL, DIRECT_ORDERS } from "@/data/catalog-meta";
 
 export default function Footer() {
   return (
@@ -28,6 +28,15 @@ export default function Footer() {
               TikTok
             </a>
           </div>
+          <address className="not-italic space-y-1 text-sm text-gray-500 leading-relaxed">
+            <p>Plaza Comercial Bolívar, primer piso, Padre Las Casas, Santiago de los Caballeros, RD</p>
+            <p>
+              <a href="https://wa.me/18297224238" target="_blank" rel="noopener noreferrer" className="hover:text-gray-700 transition-colors">
+                WhatsApp: 829-722-4238
+              </a>
+            </p>
+            <p>Lun–Vie 8:00 AM–10:00 PM · Sáb–Dom 10:00 AM–8:00 PM</p>
+          </address>
         </div>
 
         {/* Categorías */}
@@ -75,14 +84,49 @@ export default function Footer() {
         {/* CTA */}
         <div>
           <h4 className="text-sm font-semibold text-gray-900 mb-4">Pide ahora</h4>
-          <a
-            href={PEDIDOSYA_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block bg-violet-600 text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-violet-700 transition-colors"
-          >
-            Abrir PedidosYa
-          </a>
+          {DIRECT_ORDERS ? (
+            <Link
+              href="/catalogo/"
+              className="inline-block bg-violet-600 text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-violet-700 transition-colors"
+            >
+              Comprar ahora
+            </Link>
+          ) : (
+            <a
+              href={PEDIDOSYA_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-violet-600 text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-violet-700 transition-colors"
+            >
+              Abrir PedidosYa
+            </a>
+          )}
+
+          {/* Otras formas de pedir — visibles en todas las páginas */}
+          <ul className="mt-5 space-y-2 text-sm">
+            <li>
+              <a
+                href={WHATSAPP_ORDER_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-500 hover:text-[#128C7E] transition-colors"
+              >
+                Pedir por WhatsApp
+              </a>
+            </li>
+            {DIRECT_ORDERS && (
+              <li>
+                <a
+                  href={PEDIDOSYA_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-500 hover:text-violet-600 transition-colors"
+                >
+                  Pagar con tarjeta → PedidosYa
+                </a>
+              </li>
+            )}
+          </ul>
         </div>
       </div>
 

@@ -41,6 +41,12 @@ export default function Turnstile({ onToken, resetKey = 0 }: { onToken: (token: 
       onToken("dev-no-turnstile");
       return;
     }
+    // El backoffice (admin.vape2go.do) usa Google OAuth; el widget de Turnstile
+    // está atado a vapes.do y ahí mostraría un error. Lo saltamos en ese subdominio.
+    if (typeof window !== "undefined" && window.location.hostname === "admin.vape2go.do") {
+      onToken("dev-no-turnstile");
+      return;
+    }
     const SCRIPT_ID = "cf-turnstile-script";
     function renderWidget() {
       if (!ref.current || !window.turnstile || widgetId.current) return;

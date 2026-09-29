@@ -80,6 +80,20 @@
   }
 }
 
+@layer base {
+  /* Backoffice — tipografía de sistema limpia, NO el serif de la tienda.
+     El shell del backoffice envuelve todo en .backoffice para acotar esto. */
+  .backoffice h1,
+  .backoffice h2,
+  .backoffice h3,
+  .backoffice h4,
+  .backoffice h5,
+  .backoffice h6 {
+    font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: -0.011em;
+  }
+}
+
 @layer utilities {
   .card-light {
     background-color: var(--card);
@@ -100,4 +114,28 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
   }
+}
+
+/* ---- Proforma térmica del POS de mostrador (impresión 80mm) ---- */
+/* En pantalla el ticket está oculto; solo se imprime cuando el botón de proforma
+   pone data-printing="proforma" en <html> (evita que un Ctrl+P accidental imprima en blanco). */
+#pos-proforma { display: none; }
+@media print {
+  html[data-printing="proforma"] body > *:not(#pos-proforma) { display: none !important; }
+  html[data-printing="proforma"] #pos-proforma { display: block !important; }
+  html[data-printing="proforma"] { background: #fff; }
+  @page { size: 80mm auto; margin: 0; }
+  #pos-proforma {
+    width: 80mm; box-sizing: border-box; padding: 4mm 3mm;
+    font-family: ui-monospace, "Menlo", monospace; color: #000; background: #fff;
+    font-size: 11px; line-height: 1.35;
+  }
+  #pos-proforma .pf-brand { font-size: 17px; font-weight: 800; letter-spacing: 1px; text-align: center; }
+  #pos-proforma .pf-muted { text-align: center; font-size: 9px; }
+  #pos-proforma .pf-hr { border: 0; border-top: 1px dashed #000; margin: 6px 0; }
+  #pos-proforma .pf-row { display: flex; justify-content: space-between; gap: 6px; }
+  #pos-proforma .pf-item-name { flex: 1; padding-right: 4px; }
+  #pos-proforma .pf-item-sub { white-space: nowrap; }
+  #pos-proforma .pf-total { font-size: 14px; font-weight: 800; }
+  #pos-proforma .pf-legal { font-size: 8px; text-align: center; margin-top: 6px; }
 }

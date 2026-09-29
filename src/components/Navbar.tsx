@@ -3,20 +3,27 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Search, Menu, X, User, LogOut, LayoutDashboard } from "lucide-react";
+import { Search, Menu, X, User, LogOut, LayoutDashboard, ShoppingBag } from "lucide-react";
 import Logo from "./Logo";
 import SearchModal from "./SearchModal";
 import CategoryThumb from "./CategoryThumb";
-import { CATEGORIES, PEDIDOSYA_URL } from "@/data/catalog-meta";
+import { CATEGORIES, PEDIDOSYA_URL, DIRECT_ORDERS } from "@/data/catalog-meta";
 import { useAuth } from "@/lib/auth-context";
+import { useCart } from "@/lib/cart-context";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const { session, isAdmin, signOut } = useAuth();
+  const { count } = useCart();
   const router = useRouter();
   const accountRef = useRef<HTMLDivElement>(null);
+
+  // El badge del carrito lee localStorage → solo se pinta tras montar (evita
+  // mismatch de hydration entre el HTML estático y el estado hidratado).
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     function onClick(e: MouseEvent) {
@@ -69,6 +76,20 @@ export default function Navbar() {
             >
               <Search size={18} />
             </button>
+            {DIRECT_ORDERS && (
+              <Link
+                href="/carrito/"
+                className="relative p-2 text-gray-500 hover:text-gray-900 transition-colors"
+                aria-label="Carrito"
+              >
+                <ShoppingBag size={18} />
+                {mounted && count > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 bg-violet-600 text-white text-[10px] font-bold rounded-full min-w-4 h-4 px-1 flex items-center justify-center">
+                    {count}
+                  </span>
+                )}
+              </Link>
+            )}
             {session ? (
               <div className="relative" ref={accountRef}>
                 <button
@@ -85,8 +106,8 @@ export default function Navbar() {
                       <User size={15} /> Mi cuenta
                     </Link>
                     {isAdmin && (
-                      <Link href="/admin/" onClick={() => setAccountOpen(false)} className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">
-                        <LayoutDashboard size={15} /> Panel admin
+                      <Link href="/backoffice/" onClick={() => setAccountOpen(false)} className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">
+                        <LayoutDashboard size={15} /> Backoffice
                       </Link>
                     )}
                     <button
@@ -107,14 +128,23 @@ export default function Navbar() {
                 <User size={18} />
               </Link>
             )}
-            <a
-              href={PEDIDOSYA_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden sm:inline-flex items-center bg-violet-600 text-white text-xs font-semibold px-4 py-2 rounded-lg hover:bg-violet-700 transition-colors ml-2"
-            >
-              Pedir ahora
-            </a>
+            {DIRECT_ORDERS ? (
+              <Link
+                href="/catalogo/"
+                className="hidden sm:inline-flex items-center bg-violet-600 text-white text-xs font-semibold px-4 py-2 rounded-lg hover:bg-violet-700 transition-colors ml-2"
+              >
+                Comprar ahora
+              </Link>
+            ) : (
+              <a
+                href={PEDIDOSYA_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden sm:inline-flex items-center bg-violet-600 text-white text-xs font-semibold px-4 py-2 rounded-lg hover:bg-violet-700 transition-colors ml-2"
+              >
+                Pedir ahora
+              </a>
+            )}
             <button
               className="md:hidden p-2 text-gray-500 hover:text-gray-900 transition-colors"
               onClick={() => setMenuOpen(!menuOpen)}
@@ -131,6 +161,11 @@ export default function Navbar() {
             <Link href="/catalogo/" onClick={() => setMenuOpen(false)} className="block py-2 text-sm text-gray-700 hover:text-violet-600 transition-colors font-medium">
               Catálogo completo
             </Link>
+            {DIRECT_ORDERS && (
+              <Link href="/carrito/" onClick={() => setMenuOpen(false)} className="flex items-center gap-2.5 py-2 text-sm text-gray-700 hover:text-violet-600 transition-colors font-medium">
+                <ShoppingBag size={16} /> Carrito{mounted && count > 0 ? ` (${count})` : ""}
+              </Link>
+            )}
             {CATEGORIES.map((cat) => (
               <Link
                 key={cat.id}
@@ -143,9 +178,15 @@ export default function Navbar() {
               </Link>
             ))}
             <div className="pt-3 border-t border-gray-100 flex gap-3">
-              <a href={PEDIDOSYA_URL} target="_blank" rel="noopener noreferrer" className="flex-1 text-center text-sm py-2 rounded-lg bg-violet-600 text-white font-semibold hover:bg-violet-700 transition-colors">
-                PedidosYa
-              </a>
+              {DIRECT_ORDERS ? (
+                <Link href="/catalogo/" onClick={() => setMenuOpen(false)} className="flex-1 text-center text-sm py-2 rounded-lg bg-violet-600 text-white font-semibold hover:bg-violet-700 transition-colors">
+                  Comprar ahora
+                </Link>
+              ) : (
+                <a href={PEDIDOSYA_URL} target="_blank" rel="noopener noreferrer" className="flex-1 text-center text-sm py-2 rounded-lg bg-violet-600 text-white font-semibold hover:bg-violet-700 transition-colors">
+                  PedidosYa
+                </a>
+              )}
             </div>
           </div>
         )}

@@ -26,9 +26,52 @@ export function initMonitoring(): void {
       dsn,
       environment: process.env.NEXT_PUBLIC_ENV ?? "production",
       tracesSampleRate: 0.1,
-      replaysSessionSampleRate: 0,
-      replaysOnErrorSampleRate: 0.2,
+      // Sin Session Replay: no se registra `Sentry.replayIntegration()`, así que
+      // no hay grabación de pantalla ni de inputs (auditoría legal 21-sep-2026).
+      // Si algún día se necesita para depurar errores, agregar la integración
+      // explícita con `maskAllText: true` y `blockAllMedia: true` (default seguro).
       sendDefaultPii: false,
+
+      // Filtra ruido de terceros que NO es un bug de vapes.do (no debe paginar).
+      ignoreErrors: [
+        // Navegadores in-app (Instagram/Facebook/TikTok) inyectan su propio JS
+        // que llama a window.webkit.messageHandlers y truena en iOS. No es código nuestro.
+        /webkit\.messageHandlers/i,
+        "sendDataToNative",
+        "sendPageHideMessage",
+        "_AutofillCallbackHandler",
+      ],
+
+      beforeSend(event) {
+        try {
+          const ex = event.exception?.values?.[0];
+          const value = ex?.value ?? "";
+
+          // 1) Errores de scripts inyectados por el navegador in-app: TODOS sus
+          //    frames son app:/// (sin path); nuestro código vive en app:///_next/...
+          const frames =
+            event.exception?.values?.flatMap((v) => v.stacktrace?.frames ?? []) ?? [];
+          const hasOurCode = frames.some((f) => (f.filename ?? "").includes("_next"));
+          const hasInjected = frames.some((f) => {
+            const fn = f.filename ?? "";
+            return fn === "app:///" || /^app:\/\/\/:\d/.test(fn);
+          });
+          if (hasInjected && !hasOurCode) return null;
+
+          // 2) Fallos de red transitorios (CDN de imágenes, señal móvil, adblock)
+          //    SOLO cuando vienen de un rejection/error global no manejado. Los
+          //    errores capturados a mano (captureError, con contexto) sí pasan.
+          const unhandled = ex?.mechanism?.handled === false;
+          const isNetworkNoise =
+            /(Load failed|Failed to fetch|NetworkError|network connection was lost|The request timed out|cancelled)/i.test(
+              value,
+            );
+          if (unhandled && isNetworkNoise) return null;
+        } catch {
+          /* si el filtro truena, deja pasar el evento */
+        }
+        return event;
+      },
     });
   });
 }

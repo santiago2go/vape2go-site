@@ -24,6 +24,8 @@ export interface Product {
   description: string;
   features: string[];
   tags: string[];
+  /** Preguntas frecuentes por producto — FAQPage JSON-LD + sección visible (SEO/AEO). */
+  faqs?: { q: string; a: string }[];
   bestseller?: boolean;
   image?: string;
   images?: string[];
@@ -140,10 +142,11 @@ export function searchProducts(products: Product[], query: string, limit = 8): P
   return products
     .filter(
       (p) =>
-        p.name.toLowerCase().includes(q) ||
-        p.brand.toLowerCase().includes(q) ||
-        p.category.toLowerCase().includes(q) ||
-        p.tags.some((t) => t.toLowerCase().includes(q))
+        p.disponible &&
+        (p.name.toLowerCase().includes(q) ||
+          p.brand.toLowerCase().includes(q) ||
+          p.category.toLowerCase().includes(q) ||
+          p.tags.some((t) => t.toLowerCase().includes(q)))
     )
     .slice(0, limit);
 }
@@ -160,9 +163,36 @@ export function cdnImage(url: string | undefined, width: number): string | undef
   return `${url}?width=${width}`;
 }
 
+/** Formatea un número como precio dominicano: 1234.5 → "RD$1,235". */
+export function formatDOP(n: number): string {
+  return "RD$" + Math.round(n).toLocaleString("es-DO");
+}
+
+/**
+ * Feature flag: enciende la experiencia de "órdenes directas" (carrito propio:
+ * PriceTag en vivo + Agregar al carrito + ícono de carrito en el Navbar).
+ *
+ * APAGADO (default, sin la env var) → storefront como en producción hoy: precio
+ * estático + CTA "Pedir por PedidosYa", sin carrito.
+ * ENCENDIDO → `NEXT_PUBLIC_DIRECT_ORDERS=true` en el build.
+ *
+ * Es una constante de BUILD (NEXT_PUBLIC_* se inlinea al compilar), así que sirve
+ * igual en server y client components sin costo en runtime.
+ */
+export const DIRECT_ORDERS = process.env.NEXT_PUBLIC_DIRECT_ORDERS === "true";
+
 export const SITE_URL = "https://vapes.do";
+/**
+ * Tienda en PedidosYa. Sigue vigente aunque el FLIP de órdenes directas esté
+ * encendido: es la ÚNICA vía donde el cliente puede pagar con TARJETA (nuestro
+ * checkout solo toma efectivo contra entrega y transferencia).
+ * Verificado 2026-08-19 → https://www.pedidosya.com.do/cadenas/vape-2-go
+ */
 export const PEDIDOSYA_URL = "http://bit.ly/4nPE2yE";
-// TODO: número real de WhatsApp de Vape 2 Go (hoy placeholder; no se renderiza en UI aún)
-export const WHATSAPP_URL = "https://wa.me/18094567890";
+export const WHATSAPP_URL = "https://wa.me/18297224238";
+/** Mismo WhatsApp, con el mensaje de pedido ya escrito para el cliente. */
+export const WHATSAPP_ORDER_URL = `${WHATSAPP_URL}?text=${encodeURIComponent(
+  "Hola, quiero hacer un pedido en Vape 2 Go 🛵"
+)}`;
 export const INSTAGRAM_URL = "https://instagram.com/vape2go.do";
 export const TIKTOK_URL = "https://www.tiktok.com/@vape2go.do";

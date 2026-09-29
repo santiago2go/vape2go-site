@@ -4,9 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/sync-availability.mjs && node scripts/gen-lite.mjs",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postbuild": "node scripts/verificar-consentimiento.mjs --exigir-build",
+    "verificar-consentimiento": "node scripts/verificar-consentimiento.mjs"
   },
   "dependencies": {
     "@sentry/nextjs": "^10.59.0",

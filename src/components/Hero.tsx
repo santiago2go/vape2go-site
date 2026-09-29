@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Check } from "lucide-react";
 import { getHeroProducts, CATEGORIES, PEDIDOSYA_URL, cdnImage } from "@/data/products";
+import { DIRECT_ORDERS } from "@/data/catalog-meta";
 import CategoryThumb from "./CategoryThumb";
 
 const TRUST = [
@@ -42,14 +43,23 @@ export default function Hero() {
 
           {/* CTAs — una acción claramente dominante */}
           <div className="flex flex-col sm:flex-row gap-3 pt-1">
-            <a
-              href={PEDIDOSYA_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 bg-violet-600 text-white font-semibold text-base px-7 py-3.5 rounded-xl shadow-lg shadow-violet-600/25 hover:bg-violet-700 transition-all"
-            >
-              Pedir ahora <ArrowRight size={18} />
-            </a>
+            {DIRECT_ORDERS ? (
+              <Link
+                href="/catalogo/"
+                className="inline-flex items-center justify-center gap-2 bg-violet-600 text-white font-semibold text-base px-7 py-3.5 rounded-xl shadow-lg shadow-violet-600/25 hover:bg-violet-700 transition-all"
+              >
+                Comprar ahora <ArrowRight size={18} />
+              </Link>
+            ) : (
+              <a
+                href={PEDIDOSYA_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 bg-violet-600 text-white font-semibold text-base px-7 py-3.5 rounded-xl shadow-lg shadow-violet-600/25 hover:bg-violet-700 transition-all"
+              >
+                Pedir ahora <ArrowRight size={18} />
+              </a>
+            )}
             <Link
               href="/catalogo/"
               className="inline-flex items-center justify-center px-7 py-3.5 rounded-xl border border-gray-300 text-gray-700 font-medium hover:border-gray-400 hover:bg-gray-50 transition-colors"

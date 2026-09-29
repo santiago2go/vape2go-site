@@ -1,0 +1,335 @@
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { Check } from "lucide-react";
+import ProductCard from "@/components/ProductCard";
+import TrackView from "@/components/TrackView";
+import AddToCartButton from "@/components/AddToCartButton";
+import PriceTag from "@/components/PriceTag";
+import ProductReviews from "@/components/ProductReviews";
+import OrderButton from "@/components/OrderButton";
+import VapePlaceholder from "@/components/VapePlaceholder";
+import { DIRECT_ORDERS } from "@/data/catalog-meta";
+import {
+  getProductBySlug,
+  getAllSlugs,
+  getProductsByCategory,
+  getAllProducts,
+  CATEGORIES,
+  SITE_URL,
+  cdnImage,
+  type Category,
+} from "@/data/products";
+import { getBrandByName } from "@/data/brands";
+
+export function generateStaticParams() {
+  return getAllSlugs().map((slug) => ({ slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const product = getProductBySlug(slug);
+  if (!product) return {};
+  const canonical = `${SITE_URL}/productos/${product.id}/`;
+  const description =
+    product.description ||
+    `Compra ${product.name} de ${product.brand} en Vape 2 Go. Entrega rápida en Santiago, RD.`;
+  return {
+    // el template del layout ("%s | Vape 2 Go") agrega la marca una sola vez
+    title: product.name,
+    description,
+    keywords: product.tags,
+    alternates: { canonical },
+    openGraph: {
+      type: "website",
+      locale: "es_DO",
+      siteName: "Vape 2 Go",
+      title: product.name,
+      description,
+      url: canonical,
+      images: product.image ? [{ url: product.image }] : [],
+    },
+    twitter: {
+      card: product.image ? "summary_large_image" : "summary",
+      title: product.name,
+      description,
+      images: product.image ? [product.image] : [],
+    },
+  };
+}
+
+const CATEGORY_STYLES: Record<Category, { label: string; bg: string; text: string }> = {
+  desechables: { label: "Desechable", bg: "bg-violet-100", text: "text-violet-700" },
+  pods:        { label: "Pod",        bg: "bg-blue-100",   text: "text-blue-700" },
+  liquids:     { label: "Liquid",     bg: "bg-emerald-100",text: "text-emerald-700" },
+  accesorios:  { label: "Accesorio",  bg: "bg-gray-100",   text: "text-gray-600" },
+};
+
+export default async function ProductPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const product = getProductBySlug(slug);
+  if (!product) notFound();
+
+  const catMeta = CATEGORIES.find((c) => c.id === product.category);
+  const catStyle = CATEGORY_STYLES[product.category];
+  const brandMeta = getBrandByName(product.brand);
+  // Enlazado interno: prioriza la MISMA MARCA (más relevante), luego misma
+  // categoría. Solo productos disponibles (indexables / en el sitemap).
+  const sameBrand = getAllProducts()
+    .filter((p) => p.brand === product.brand && p.id !== product.id && p.disponible)
+    .slice(0, 4);
+  const brandIds = new Set(sameBrand.map((p) => p.id));
+  const related = getProductsByCategory(product.category)
+    .filter((p) => p.id !== product.id && p.disponible && !brandIds.has(p.id))
+    .slice(0, 4);
+
+  const productUrl = `${SITE_URL}/productos/${product.id}/`;
+
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    sku: product.sku,
+    brand: { "@type": "Brand", name: product.brand },
+    description: product.description || undefined,
+    image: product.image || undefined,
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "DOP",
+      price: product.price,
+      availability: product.disponible
+        ? "https://schema.org/InStock"
+        : "https://schema.org/OutOfStock",
+      url: productUrl,
+    },
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Inicio", item: `${SITE_URL}/` },
+      { "@type": "ListItem", position: 2, name: "Tienda", item: `${SITE_URL}/catalogo/` },
+      ...(catMeta
+        ? [{
+            "@type": "ListItem",
+            position: 3,
+            name: catMeta.label,
+            item: `${SITE_URL}/categoria/${product.category}/`,
+          }]
+        : []),
+      {
+        "@type": "ListItem",
+        position: catMeta ? 4 : 3,
+        name: product.name,
+        item: productUrl,
+      },
+    ],
+  };
+
+  const faqSchema =
+    product.faqs && product.faqs.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: product.faqs.map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a },
+          })),
+        }
+      : null;
+
+  return (
+    <>
+      <TrackView event="view_product" productId={product.id} category={product.category} brand={product.brand} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema).replace(/</g, "\\u003c") }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema).replace(/</g, "\\u003c") }}
+      />
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c") }}
+        />
+      )}
+
+      <div className="max-w-6xl mx-auto px-4 py-10 space-y-12">
+        {/* Breadcrumb */}
+        <nav className="text-sm text-gray-400 flex items-center gap-2 flex-wrap">
+          <Link href="/" className="hover:text-gray-700 transition-colors">Inicio</Link>
+          <span>/</span>
+          <Link href="/catalogo/" className="hover:text-gray-700 transition-colors">Tienda</Link>
+          <span>/</span>
+          {catMeta && (
+            <>
+              <Link href={`/categoria/${product.category}/`} className="hover:text-gray-700 transition-colors">
+                {catMeta.label}
+              </Link>
+              <span>/</span>
+            </>
+          )}
+          <span className="text-gray-700 truncate max-w-[200px]">{product.name}</span>
+        </nav>
+
+        {/* Product detail */}
+        <div className="grid md:grid-cols-2 gap-10">
+          {/* Image */}
+          <div className="card-light aspect-square flex items-center justify-center relative overflow-hidden bg-gray-50">
+            {product.image ? (
+              <Image
+                src={cdnImage(product.image, 800)!}
+                alt={product.name}
+                fill
+                className="object-contain p-8"
+                priority
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            ) : (
+              <VapePlaceholder className="w-3/4 h-3/4" />
+            )}
+          </div>
+
+          {/* Info */}
+          <div className="space-y-5">
+            {/* Badges */}
+            <div className="flex gap-2 flex-wrap">
+              <span className={`text-xs font-semibold px-3 py-1 rounded-full ${catStyle.bg} ${catStyle.text}`}>
+                {catStyle.label}
+              </span>
+              {product.disponible ? (
+                <span className="text-xs font-semibold px-3 py-1 rounded-full bg-green-50 text-green-700">
+                  Disponible
+                </span>
+              ) : (
+                <span className="text-xs font-semibold px-3 py-1 rounded-full bg-gray-100 text-gray-400">
+                  Agotado
+                </span>
+              )}
+            </div>
+
+            {brandMeta ? (
+              <Link
+                href={`/marca/${brandMeta.id}/`}
+                className="text-xs text-violet-500 uppercase tracking-widest hover:text-violet-700 transition-colors"
+              >
+                {product.brand}
+              </Link>
+            ) : (
+              <p className="text-xs text-gray-400 uppercase tracking-widest">{product.brand}</p>
+            )}
+            <h1 className="text-3xl font-normal text-gray-900 leading-tight">{product.name}</h1>
+            <p className="text-xs text-gray-400">SKU: {product.sku}</p>
+
+            {DIRECT_ORDERS ? (
+              /* Órdenes directas ON: precio en vivo + carrito */
+              <>
+                <PriceTag sku={product.sku} fallback={product.price > 0 ? product.priceFormatted : undefined} size="lg" />
+
+                <div className="max-w-xs">
+                  <AddToCartButton product={product} size="lg" />
+                </div>
+              </>
+            ) : (
+              /* Órdenes directas OFF: render original de producción (PedidosYa) */
+              <>
+                {product.price > 0 && (
+                  <p className="text-3xl font-bold text-violet-700">{product.priceFormatted}</p>
+                )}
+
+                {product.disponible ? (
+                  <OrderButton productId={product.id} />
+                ) : (
+                  <span className="block text-center font-semibold text-sm py-4 rounded-xl bg-gray-100 text-gray-400 cursor-not-allowed">
+                    No disponible
+                  </span>
+                )}
+              </>
+            )}
+
+            {product.description && (
+              <div className="space-y-2 pt-2 border-t border-gray-100">
+                <h3 className="font-semibold text-gray-900 text-sm">Descripción</h3>
+                <p className="text-sm text-gray-500 leading-relaxed">{product.description}</p>
+              </div>
+            )}
+
+            {product.features.length > 0 && (
+              <div className="space-y-2">
+                <h3 className="font-semibold text-gray-900 text-sm">Características</h3>
+                <ul className="space-y-1.5">
+                  {product.features.map((f, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm text-gray-500">
+                      <Check size={14} className="text-violet-600 mt-0.5 shrink-0" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Reseñas */}
+        <ProductReviews sku={product.sku} productId={product.id} productName={product.name} />
+
+        {/* Preguntas frecuentes (FAQ) — contenido único + FAQPage JSON-LD */}
+        {product.faqs && product.faqs.length > 0 && (
+          <section className="space-y-4 pt-6 border-t border-gray-100">
+            <h2 className="text-xl font-normal text-gray-900">Preguntas frecuentes</h2>
+            <div className="space-y-3">
+              {product.faqs.map((f, i) => (
+                <details key={i} className="group rounded-xl border border-gray-100 p-4">
+                  <summary className="cursor-pointer font-semibold text-gray-900 text-sm list-none flex justify-between items-center gap-4">
+                    {f.q}
+                    <span className="text-violet-500 group-open:rotate-45 transition-transform shrink-0">+</span>
+                  </summary>
+                  <p className="text-sm text-gray-500 leading-relaxed mt-2">{f.a}</p>
+                </details>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Más de la misma marca (enlazado interno relevante) */}
+        {sameBrand.length > 0 && (
+          <section className="space-y-6 pt-6 border-t border-gray-100">
+            <h2 className="text-xl font-normal text-gray-900">Más de {product.brand}</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              {sameBrand.map((p) => (
+                <ProductCard key={p.id} product={p} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Related */}
+        {related.length > 0 && (
+          <section className="space-y-6 pt-6 border-t border-gray-100">
+            <h2 className="text-xl font-normal text-gray-900">
+              Más {catMeta?.label.toLowerCase() ?? "productos"}
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              {related.map((p) => (
+                <ProductCard key={p.id} product={p} />
+              ))}
+            </div>
+          </section>
+        )}
+      </div>
+    </>
+  );
+}

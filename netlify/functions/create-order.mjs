@@ -1,19 +1,16 @@
 // POST /.netlify/functions/create-order
-// Crea una orden de forma SEGURA: el cliente manda items + (opcional) cupón;
-// el servidor recalcula precios desde la fuente de verdad, valida el cupón,
-// computa la comisión del afiliado (atribución híbrida decreciente) y escribe
-// la orden con service_role. El cliente NUNCA fija totales ni comisiones.
-//
-// Es el esqueleto de la Fase 1 del checkout propio. Hoy los precios se leen de
-// products.json embebido; cuando exista tabla `products` en Supabase, leer de ahí.
+// Crea una orden directa WEB de forma SEGURA. El cliente manda items (sku + qty) +
+// datos de entrega + método de pago; el servidor recalcula TODO con el motor único
+// recomputeCart() (precios/stock/cupón/delivery desde product_stock = espejo del
+// sheet Vape 2 Go Master). El cliente NUNCA fija precios, totales ni comisiones.
 
-import { admin, verifyTurnstile, json } from "./_lib.mjs";
-// esbuild (node_bundler) inyecta el JSON al compilar la función.
-import products from "../../src/data/products.json";
+import { admin, verifyTurnstile, json, recomputeCart } from "./_lib.mjs";
 
-const priceOf = (id) => {
-  const p = products.find((x) => x.id === id);
-  return p && p.disponible ? Number(p.price) || 0 : null;
+// n8n cierra los webhooks de órdenes con candado de cabecera (cacare `scripts/n8n/candado-ordenes.mjs`):
+// sin `X-N8N-Ordenes` el webhook contesta 403 y el aviso a n8n falla callado (es best-effort).
+const HOOK_HEADERS = {
+  "content-type": "application/json",
+  ...(process.env.N8N_ORDERS_HOOK_SECRET ? { "X-N8N-Ordenes": process.env.N8N_ORDERS_HOOK_SECRET } : {}),
 };
 
 export default async function handler(req) {
@@ -26,7 +23,7 @@ export default async function handler(req) {
     return json({ error: "json inválido" }, 400);
   }
 
-  const { items, coupon, customer, turnstileToken, userId } = payload ?? {};
+  const { items, coupon, customer, payment_method, cash_amount, turnstileToken } = payload ?? {};
   const ip = req.headers.get("x-nf-client-connection-ip") ?? undefined;
 
   if (!(await verifyTurnstile(turnstileToken, ip))) {
@@ -35,64 +32,85 @@ export default async function handler(req) {
   if (!Array.isArray(items) || items.length === 0) {
     return json({ error: "carrito vacío" }, 400);
   }
-
-  // Recalcular subtotal desde la fuente de verdad (ignora precios del cliente)
-  let subtotal = 0;
-  const lineItems = [];
-  for (const it of items) {
-    const unit = priceOf(it.product_id);
-    if (unit == null) return json({ error: `producto no disponible: ${it.product_id}` }, 400);
-    const qty = Math.max(1, Math.min(99, Number(it.qty) || 1));
-    subtotal += unit * qty;
-    lineItems.push({ product_id: it.product_id, qty, unit_price: unit });
+  if (!customer?.name || !customer?.phone) {
+    return json({ error: "faltan tu nombre y celular" }, 400);
   }
+  if (!customer?.address?.line1) {
+    return json({ error: "falta la dirección de entrega" }, 400);
+  }
+  const method = payment_method === "transfer" ? "transfer" : "cash";
 
   const sb = admin();
 
-  // Validar cupón + calcular descuento y comisión
-  let discount = 0, commissionOwed = 0, affiliateCode = null, isFirstOrder = false;
-  if (coupon) {
-    const code = String(coupon).trim().toUpperCase();
-    const { data: aff } = await sb.from("affiliates").select("*").eq("code", code).eq("active", true).maybeSingle();
-    if (aff) {
-      affiliateCode = code;
-      discount = aff.discount_type === "percent"
-        ? subtotal * (Number(aff.discount_value) / 100)
-        : Number(aff.discount_value);
-      if (aff.max_discount) discount = Math.min(discount, Number(aff.max_discount));
-
-      // ¿primera orden de este cliente con este código? -> comisión plena
-      if (userId) {
-        const { count } = await sb.from("orders")
-          .select("id", { count: "exact", head: true })
-          .eq("user_id", userId).eq("affiliate_code", code);
-        isFirstOrder = (count ?? 0) === 0;
-      } else {
-        isFirstOrder = true;
-      }
-      // atribución híbrida decreciente: plena en la primera; reducida luego
-      const pct = isFirstOrder ? Number(aff.commission_pct) : Number(aff.decay_pct ?? 0);
-      commissionOwed = (subtotal - discount) * (pct / 100);
-    }
+  // El user_id se deriva del JWT verificado (Authorization: Bearer), NUNCA del body.
+  let uid = null;
+  const authz = req.headers.get("authorization") || "";
+  const bearer = authz.startsWith("Bearer ") ? authz.slice(7) : null;
+  if (bearer) {
+    const { data: { user } = {} } = await sb.auth.getUser(bearer);
+    uid = user?.id ?? null;
   }
 
-  const total = Math.max(0, subtotal - discount);
+  // --- Motor de precios único (con delivery por zona) ---
+  const calc = await recomputeCart(sb, {
+    items,
+    coupon,
+    uid,
+    address: customer.address,
+    applyDelivery: true,
+  });
+  if (!calc.ok) return json({ error: calc.error }, calc.status);
+
+  // Nota de efectivo (para llevar el cambio): se agrega a las notas de la orden →
+  // aparece en el detalle de Órdenes del backoffice y en el correo de ops.
+  let notes = customer.address?.delivery_notes ?? null;
+  const cashAmt = Number(cash_amount);
+  if (method === "cash" && Number.isFinite(cashAmt) && cashAmt >= calc.total) {
+    const change = Math.round(cashAmt - calc.total);
+    const line =
+      change > 0
+        ? `💵 Paga con RD$${Math.round(cashAmt)} · CAMBIO a llevar: RD$${change}`
+        : `💵 Paga con el monto exacto (RD$${Math.round(calc.total)})`;
+    notes = notes ? `${line}\n${notes}` : line;
+  }
 
   const { data, error } = await sb.from("orders").insert({
-    user_id: userId ?? null,
+    user_id: uid,
     status: "pending",
-    customer_name: customer?.name ?? null,
-    customer_phone: customer?.phone ?? null,
-    address: customer?.address ?? null,
-    items: lineItems,
-    subtotal,
-    discount_applied: discount,
-    total,
-    affiliate_code: affiliateCode,
-    is_first_order: isFirstOrder,
-    commission_owed: commissionOwed,
-  }).select("id,total,discount_applied").single();
+    payment_method: method,
+    payment_status: "pending",
+    customer_name: customer.name,
+    customer_phone: customer.phone,
+    customer_email: customer.email ?? null,
+    address: customer.address,
+    items: calc.lineItems,
+    subtotal: calc.subtotal,
+    discount_applied: calc.discount,
+    delivery_fee: calc.delivery,
+    delivery_zone: calc.deliveryZone,
+    total: calc.total,
+    affiliate_code: calc.affiliateCode,
+    is_first_order: calc.isFirstOrder,
+    commission_owed: calc.commissionOwed,
+    channel: "WEB",
+    brand: "VAPE",
+    notes,
+  }).select("id,subtotal,discount_applied,delivery_fee,total,payment_method,status").single();
 
-  if (error) return json({ error: error.message }, 500);
+  if (error) { console.error("create-order insert failed", error); return json({ error: "No pudimos crear la orden. Intenta de nuevo." }, 500); }
+
+  // --- Disparar order-bridge n8n: descuenta el sheet + escribe Ventas-Raw + correo.
+  // El WF responde de inmediato (procesa async); no bloqueamos al cliente. ---
+  const hook = process.env.ORDER_WEBHOOK_URL;
+  if (hook) {
+    try {
+      await fetch(hook, {
+        method: "POST",
+        headers: HOOK_HEADERS,
+        body: JSON.stringify({ order_id: data.id }),
+      });
+    } catch { /* no romper la orden si el bridge falla; se reprocesa desde backoffice */ }
+  }
+
   return json({ ok: true, order: data });
 }
